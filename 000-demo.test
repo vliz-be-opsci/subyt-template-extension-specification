@@ -1,0 +1,101 @@
+# control chars are at first position, and must be in # = ?< $>
+# these all
+#  1. make the rest of the line ignored / opitionally assigned as metadata - comment for output in case of output
+#  2. finish previous section
+#  3. start new section of type reflecting the char 
+#     = assign section - creates context, replaces previous, empty clears -- suggested to use json (yml?)
+#     ?< input section - creates lines to read as template to be "executed / expanded"
+#     $> output section - captures expected output to match all previous ?< input section (template expansions)
+# known limitation input-templates and output-text can not start with either of the control chars
+# this limitation can be limited to only # and then introduce tuples ## #?< #$> #=
+#
+
+
+= no assignments
+?< input template using literals
+  {{ "Testing \\\"'escaper"|lower }}
+$> expected value output
+  testing \"'escaper
+# end test
+
+
+= assign using json syntax
+  {
+    "txt":  "TestIng \\\"'escaper" 
+  } 
+? 
+  {{ txt |lower}}
+$ 
+  testing \"'escaper
+#
+
+
+=
+? 
+  {{ uritexpand("{/param}/url",{"param":'value'}) }}
+$
+  /value/url
+#
+
+
+?
+  {{ "true"|xsd('boolean') }}
+$
+  'true'^^xsd:boolean
+#
+
+?
+  {{ "false"|xsd('boolean') }}
+$
+  'false'^^xsd:boolean
+#
+
+?
+  {{ "800903"|xsd('integer') }}
+$
+  '800903'^^xsd:integer
+#
+
+?
+  {{ "1.234"|xsd('double') }}
+$
+  '1.234'^^xsd:double
+#
+
+?
+  {{ "1980-09-03"|xsd('date') }}
+$
+  '1980-09-03'^^xsd:date
+#
+
+?
+  {{ "1980-09-03"|xsd('datetime') }}
+$
+  '1980-09-03T00:00:00'^^xsd:dateTime
+#
+
+?
+  {{ "http://vliz.be?weirdchars=[]<>"|xsd('anyURI') }}
+$
+  'http://vliz.be?weirdchars=%5B%5D%3C%3E'^^xsd:anyURI
+#
+
+?
+  {{ "1980"|xsd('gYear') }}
+$
+  '1980'^^xsd:gYear
+#
+
+?
+  {{ "1980-03"|xsd('gYearMonth') }}
+$
+  '1980-03'^^xsd:gYearMonth
+#
+
+
+?
+  {{ "http://www.example.com"|uri }}
+$
+  <http://www.example.com>
+#
+

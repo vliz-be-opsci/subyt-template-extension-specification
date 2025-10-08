@@ -1,0 +1,218 @@
+# j2-subyt-extension-tests
+# type conversions -- to verify that input-output conversions work as expected 
+#  -- testing the actual output of the filter `| xsd (value, type, quote)`
+#  -- for various types 
+# == xsd:auto-date formatting  ===============================================
+
+= use BASE_CONTEXT 
+? -- detect dateTime precision
+  {{ dttm_Sep25_2025_5pm      | xsd('auto-date') }}
+?
+  {{ txt_Sep25_2025_5pm       | xsd('auto-date') }}
+$ 
+  '2025-09-25T17:00:00'^^xsd:dateTime
+? -- including timezone info
+  {{ txt_Sep25_2025_5pm_loc   | xsd('auto-date') }}
+?
+  {{ dttm_Sep25_2025_5pm_loc  | xsd('auto-date') }}
+$
+  '2025-09-25T17:00:00+02:00'^^xsd:dateTime
+#
+? -- detect date precision
+  {{ "1970-05-06"         | xsd('auto-date') }}
+?
+  {{ txt_May6_1970        | xsd('auto-date') }}
+?
+  {{ dt_May6_1970         | xsd('auto-date') }}
+$
+  '1970-05-06'^^xsd:date
+#
+? -- detect year-month precision
+  {{ "2025-09"             | xsd('Auto-Date') }}
+$
+  '2025-09'^^xsd:gYearMonth
+#
+? -- detect year precision
+  {{ "2025"             | xsd('Auto-Date') }}
+? -- detect year precision
+  {{ 2025               | xsd('auto-date') }}
+$
+  '2025'^^xsd:gYear
+#
+
+# == xsd:auto-number formatting  =============================================
+= use BASE_CONTEXT
+? -- detect int
+  {{ 1      | xsd('auto-number')  }}
+? 
+  {{ int_1  | xsd('auto-number')  }}
+? 
+  {{ "1"    | xsd('auto-number')  }}
+? 
+  {{ txt_1  | xsd('auto-number')  }}
+$ 
+  '1'^^xsd:integer
+#
+
+?-- detect double
+  {{ 1.0          | xsd('auto-number')  }}
+? 
+  {{ float_1      | xsd('auto-number')  }}
+? 
+  {{ "1.0"        | xsd('auto-number')  }}
+? 
+  {{ txt_1_dot_0  | xsd('auto-number')  }}
+$ 
+  '1.0'^^xsd:double
+
+# == xsd:auto-any formatting  ================================================
+
+= use BASE_CONTEXT
+? -- detect anyURI
+  {{ "https://example.org/basic"  | xsd('auto-any') }}
+$
+  'https://example.org/basic'^^xsd:anyURI
+? 
+  {{ "https://example.org/[square-brackets]" | xsd('auto-any') }}
+$
+  'https://example.org/%5Bsquare-brackets%5D'^^xsd:anyURI
+#            
+
+? -- detect int
+  {{ 1      | xsd('auto-any')  }} 
+? 
+  {{ int_1  | xsd('auto-any')  }} 
+? 
+  {{ "1"    | xsd('auto-any')  }} 
+? 
+  {{ txt_1  | xsd('auto-any')  }} 
+$
+  '1'^^xsd:integer
+#
+
+? -- detect bool true
+  {{  True     | xsd('auto') }}
+?
+  {{  bool_t   | xsd('auto') }}
+?
+  {{  "true"   | xsd('auto') }}
+?
+  {{  txt_true | xsd('auto') }}
+$
+  'true'^^xsd:boolean
+? -- false
+  {{  False     | xsd('auto') }}
+?
+  {{  bool_f    | xsd('auto') }}
+?
+  {{  "false"   | xsd('auto') }}
+?
+  {{  txt_false | xsd('auto') }}
+$
+  'false'^^xsd:boolean
+#
+
+?-- detect double
+  {{ 1.0          | xsd('auto-any')  }}
+? 
+  {{ float_1      | xsd('auto-any')  }}
+? 
+  {{ "1.0"        | xsd('auto-any')  }}
+? 
+  {{ txt_1_dot_0  | xsd('auto-any')  }}
+$ 
+  '1.0'^^xsd:double
+#        
+
+? -- detect dateTime precision
+  {{ dttm_Sep25_2025_5pm      | xsd('auto-any') }}
+?
+  {{ txt_Sep25_2025_5pm       | xsd('auto-any') }}
+$ 
+  '2025-09-25T17:00:00'^^xsd:dateTime
+? -- including timezone info
+  {{ txt_Sep25_2025_5pm_loc   | xsd('auto-any') }}
+?
+  {{ dttm_Sep25_2025_5pm_loc  | xsd('auto-any') }}
+$
+  '2025-09-25T17:00:00+02:00'^^xsd:dateTime
+#
+? -- detect date precision
+  {{ "1970-05-06"         | xsd('auto-any') }}
+?
+  {{ txt_May6_1970        | xsd('auto-any') }}
+?
+  {{ dt_May6_1970         | xsd('auto-any') }}
+$
+  '1970-05-06'^^xsd:date
+#
+? -- detect year-mont precision
+  {{ "2025-09"             | xsd('Auto-Any') }}
+$
+  '2025-09'^^xsd:gYearMonth
+#
+# note -- year precision cannot be detected as 'integer' takes over
+# 
+? -- finally just use string 
+  {{ "anything" | xsd('auto')   }}
+? 
+  {{ txt_any    | xsd('auto')   }}
+$
+  'anything'^^xsd:string
+? -- even if empty
+  {{ ""         | xsd('auto')   }}
+? 
+  {{ txt_none   | xsd('auto')   }}
+$
+  ''^^xsd:string
+? -- even if whitespacy
+  {{ " "         | xsd('auto')   }}
+? 
+  {{ txt_space   | xsd('auto')   }}
+$
+  ' '^^xsd:string
+? -- even if whitespacy
+  {{ "\n"         | xsd('auto')   }}
+? 
+  {{ txt_nl       | xsd('auto')   }}
+$
+  '''
+  '''^^xsd:string
+#
+
+# ...... unacceptable string values .............................................
+= add these to the BASE_CONTEXT:
+  {
+    "errmsg_date"   : "*** EXPECTED FAILURE AUTO_DATE MSG ***",
+    "errmsg_num"    : "*** EXPECTED FAILURE AUTO_NUMBER MSG ***",
+    "errmsg_any"    : "*** EXPECTED FAILURE AUTO_ANY MSG ***"
+  }
+? -- we are forcing these failure outputs in different ways
+  {{ errmsg_date }}
+  {{ errmsg_num }}
+  {{ errmsg_any }}
+?< -- txt_none only fails auto-date and auto-number
+  {{ txt_none            | xsd('auto-date',   fb=errmsg_date) }}
+  {{ txt_none            | xsd('auto-number', fb=errmsg_num)  }}
+  {{ none                | xsd('auto-any',    fb=errmsg_any)  }}
+?< -- txt_any only fails auto-date and auto-number
+  {{ txt_any             | xsd('auto-date',   fb=errmsg_date) }}
+  {{ txt_any             | xsd('auto-number', fb=errmsg_num)  }}
+  {{ none                | xsd('auto-any',    fb=errmsg_any)  }}
+?<
+  {{ none                | xsd('auto-date',   fb=errmsg_date) }}
+  {{ none                | xsd('auto-number', fb=errmsg_num)  }}
+  {{ none                | xsd('auto-any',    fb=errmsg_any)  }}
+?<
+  {{ list_none           | xsd('auto-date',   fb=errmsg_date) }}
+  {{ list_none           | xsd('auto-number', fb=errmsg_num)  }}
+  {{ list_none           | xsd('auto-any',    fb=errmsg_any)  }}
+?<
+  {{ dict_none           | xsd('auto-date',   fb=errmsg_date) }}
+  {{ dict_none           | xsd('auto-number', fb=errmsg_num)  }}
+  {{ dict_none           | xsd('auto-any',    fb=errmsg_any)  }}
+$>
+  *** EXPECTED FAILURE AUTO_DATE MSG ***
+  *** EXPECTED FAILURE AUTO_NUMBER MSG ***
+  *** EXPECTED FAILURE AUTO_ANY MSG ***
+#

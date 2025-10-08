@@ -1,0 +1,176 @@
+# j2-subyt-extension-tests
+# unite application function - to guarantee content to format completeness
+# == unite usage =============================================================
+
+# ---- when it works ---------------------------------------------------------
+= reset assignments
+? -- basic typical case with value
+  {{ unite('ex:text', txt_any | xsd('string', fb='')) }};
+? -- the if-wrapping alternative still works too of course
+  {% if txt_any != undefined %}
+    ex:text {{ txt_any | xsd('string') }};
+  {% endif %}
+? -- basic case with additional tests beyond n=3
+  {{ 
+    unite(
+      'ex:text', 
+      txt_any | xsd('string', fb=''),
+      True,
+      True
+    ) 
+  }};
+$
+  ex:text 'anything'^^xsd:string;
+# -- even if empty-or-falsy values are actually there as valid content
+? -- as with empty string
+  {{ 
+    unite(
+      'ex:empty', 
+      txt_none | xsd('auto', fb='')  
+    ) 
+  }};
+$
+  ex:empty ''^^xsd:string;
+? -- as with false bool
+  {{ 
+    unite(
+      'ex:false', 
+      bool_f | xsd('auto', fb='')  
+    ) 
+  }};
+$
+  ex:false 'false'^^xsd:boolean;
+? -- as with zero int
+  {{ 
+    unite(
+      'ex:zero', 
+      int_0 | xsd('auto', fb='')  
+    ) 
+  }};
+$
+  ex:zero '0'^^xsd:integer;
+#
+
+# ---- how to customise n, sep, fb -------------------------------------------
+= 
+? -- custom n and seperator 
+  ={{ 
+    unite( 
+      'a', 'b', 'c', 'd', 
+      n=4, sep='-'
+    )
+  }}=
+$
+  =a-b-c-d=
+#
+
+= 
+? -- custom fb
+  {{ 
+    unite( 
+      'a', 'b', 'c', 'd', 
+      fb='*** FALLBACK OUTPUT ***'
+    )
+  }}
+$
+  *** FALLBACK OUTPUT ***
+#
+
+# ---- when the unite prevents incomplete statements -------------------------
+=
+? -- cases where no output will result
+  {{ unite( 'ex:text', '') }};
+? 
+  {{ unite( 'ex:text', False) }};
+? 
+  {{ unite( 'ex:text', none) }};
+? -- the basic use casse of missing content 
+  {{ 
+    unite( 
+      'ex:text',
+      none | xsd('auto', fb='')
+    ) 
+   }};
+?  -- too much content
+  {{ unite( 'a', 'b', 'c', 'd') }};
+$ -- there should be no output (other than that trailing ;-semicolon)
+  ;
+#
+
+
+# ---- in normal operation handling sparse / unequal records -----------------
+= -- use the BASE_CONTEXT
+?
+  {% for person in [dict_john, dict_jane] %}
+    {{ uritexpand("https://example.org/id/person{/name,given}", person) | uri }}
+      {{ unite( 'ex:name',  person.name  | xsd('string' , fb=''))}};
+      {{ unite( 'ex:given', person.given | xsd('string' , fb=''))}};
+      {{ unite( 'ex:age',   person.age   | xsd('integer', fb=''))}};
+      {{ unite( 'ex:alive', person.alive | xsd('boolean', fb=''))}};
+      {{ unite( 'ex:score', person.score | xsd('double' , fb=''))}};
+      {{ unite( 'ex:born',  person.born  | xsd('date'   , fb=''))}}.
+  {% endfor %}
+$
+  <https://example.org/id/person/Doe/John>
+    ex:name 'Doe'^^xsd:string;
+    ex:given 'John'^^xsd:string;
+    ex:age '52'^^xsd:integer;
+    ex:alive 'true'^^xsd:boolean;
+    ex:score '1.5'^^xsd:double;
+    ex:born '1970-05-06'^^xsd:date.
+    
+  <https://example.org/id/person/Roe/Jane>
+    ex:name 'Roe'^^xsd:string;
+    ex:given 'Jane'^^xsd:string;
+    ;
+    ;
+    ex:score '1.7'^^xsd:double;
+    ex:born '1975-08-15'^^xsd:date.
+# 
+
+
+# ---- or used in dealing with data-driven predicates too --------------------
+= -- set a non-empty string to get output
+{
+  "txt":"something" 
+}
+?
+  {{ 
+    unite(
+      'ex:' ~ txt,                    
+      txt_none | xsd('auto', fb=''), 
+      (txt != '')                   
+    )
+  }};
+?
+  {{ 
+    unite(
+      unite('ex', txt, sep=':'),
+      txt_none | xsd('auto', fb='')
+    )
+  }};
+$
+  ex:something ''^^xsd:string;
+#
+= -- use same templates but now set value to empty-string
+{
+  "txt":"" 
+}
+?
+  {{ 
+    unite(
+      'ex:' ~ txt,                 
+      txt_none | xsd('auto', fb=''),
+      (txt != '')                 
+    )
+  }};
+?
+  {{ 
+    unite(
+      unite('ex', txt, sep=':'),
+      txt_none | xsd('auto', fb='')
+    )
+  }};
+$ -- there should be no output (other than that trailing ;-semicolon)
+  ;
+#

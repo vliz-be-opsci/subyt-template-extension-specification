@@ -1,0 +1,26 @@
+# j2-subyt-extension-tests
+# map application function - allow for value translations from reference lists
+# == map usage ===============================================================
+
+= -- use standard BASE_CONTEXT
+?
+  {% set charmap = map(dict_map, 'char', 'num') %}
+  {% for record in dict_mapables %}
+    {% set nothing = charmap.apply(record, 'col_char', 'col_num') %}
+    {{ uritexpand('https://example.org/id/thing{/id}', record) | uri}}
+      ex:char {{ record.col_char | xsd('string')  }};
+      ex:num  {{ record.col_num  | xsd('integer') }}.
+  {% endfor %}
+$
+  <https://example.org/id/thing/ais1>
+    ex:char 'a'^^xsd:string;
+    ex:num  '1'^^xsd:integer.
+
+  <https://example.org/id/thing/nis14>
+    ex:char 'n'^^xsd:string;
+    ex:num  '14'^^xsd:integer.
+    
+  <https://example.org/id/thing/yis25>
+    ex:char 'y'^^xsd:string;
+    ex:num  '25'^^xsd:integer.
+#

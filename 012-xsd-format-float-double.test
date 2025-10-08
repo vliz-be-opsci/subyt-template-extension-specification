@@ -1,0 +1,163 @@
+# j2-subyt-extension-tests
+# type conversions -- to verify that input-output conversions work as expected 
+#  -- testing the actual output of the filter `| xsd (value, type, quote)`
+#  -- for various types 
+# == xsd:float formatting  ===================================================
+# ----  from literal in template ---------------------------------------------
+
+= -- use BASE_CONTEXT
+? 
+  {{ 1.0         |xsd('float') }}
+? 
+  {{ 1           |xsd('FLOAT') }}
+? 
+  {{ "1.0"       |xsd('float', "'") }}
+? 
+  {{ "001"       |xsd('float', "'") }}
+$
+  '1.0'^^xsd:float 
+#
+
+# verify float quote option
+= reset assignments
+?
+  {{ 0.1        |xsd('float', '"') }}
+?
+  {{ "0.1"      |xsd('xsd:flOat', '"') }}
+$
+  "0.1"^^xsd:float
+#
+
+# verify negatives
+= reset assignments
+?
+  {{ -11.1111     |xsd('float') }}
+$
+  '-11.1111'^^xsd:float
+#
+
+# ---- from context variables  -----------------------------------------------
+# ...... acceptable int value variants .......................................
+= use context:
+  {
+  	"int_11"   : 11,
+	  "txt_11"   : "11",
+    "float_11" : 11.0
+  }
+?
+  {{ int_11    | xsd('float') }}
+?
+  {{ txt_11    | xsd('float') }}
+?
+  {{ float_11  | xsd('float') }}
+$
+  '11.0'^^xsd:float
+#
+
+
+# ...... inacceptable float values .............................................
+= add these to the BASE_CONTEXT:
+  {
+    "txt_any"   : "anything",
+    "txt_nonum" : "3.14.15",
+    "errmsg"    : "*** EXPECTED FAILURE MSG ***"
+  }
+?
+  {{ errmsg }}
+?
+  {{ "anything" | xsd('float', fb=errmsg) }}
+?
+  {{ "3.14.15"  | xsd('float', fb=errmsg) }}
+?
+  {{ txt_any    | xsd('float', fb=errmsg) }}
+?
+  {{ txt_nonum  | xsd('float', fb=errmsg) }}
+?
+  {{ none       | xsd('float', fb=errmsg) }}
+?
+  {{ list_none  | xsd('float', fb=errmsg) }}
+?
+  {{ dict_none  | xsd('float', fb=errmsg) }}
+$
+  *** EXPECTED FAILURE MSG ***
+#
+
+# == xsd:double formatting  =================================================
+# ----  from literal in template ---------------------------------------------
+
+= -- use BASE_CONTEXT
+? 
+  {{ 1.0         |xsd('double') }}
+? 
+  {{ 1           |xsd('DOUBLE') }}
+? 
+  {{ "1.0"       |xsd('double', "'") }}
+? 
+  {{ "001"       |xsd('double', "'") }}
+$
+  '1.0'^^xsd:double 
+#
+
+# verify double quote option
+= reset assignments
+?
+  {{ 0.1        |xsd('double', '"') }}
+?
+  {{ "0.1"      |xsd('xsd:doUble', '"') }}
+$
+  "0.1"^^xsd:double
+#
+
+# verify negatives
+= reset assignments
+?
+  {{ -11.1111     |xsd('double') }}
+$
+  '-11.1111'^^xsd:double
+#
+
+# ---- from context variables  -----------------------------------------------
+# ...... acceptable int value variants .......................................
+= use context:
+  {
+  	"int_11"   : 11,
+	  "txt_11"   : "11",
+    "float_11" : 11.0
+  }
+?
+  {{ int_11    | xsd('double') }}
+?
+  {{ txt_11    | xsd('double') }}
+?
+  {{ float_11  | xsd('double') }}
+$
+  '11.0'^^xsd:double
+#
+
+
+# ...... inacceptable double values .............................................
+= add these to the BASE_CONTEXT:
+  {
+    "txt_any"   : "anything",
+    "txt_nonum" : "3.14.15",
+    "errmsg"    : "*** EXPECTED FAILURE MSG ***"
+  }
+?
+  {{ errmsg }}
+?
+  {{ "anything" | xsd('double', fb=errmsg) }}
+?
+  {{ "3.14.15"  | xsd('double', fb=errmsg) }}
+?
+  {{ txt_any    | xsd('double', fb=errmsg) }}
+?
+  {{ txt_nonum  | xsd('double', fb=errmsg) }}
+?
+  {{ none       | xsd('double', fb=errmsg) }}
+?
+  {{ list_none  | xsd('double', fb=errmsg) }}
+?
+  {{ dict_none  | xsd('double', fb=errmsg) }}
+$
+  *** EXPECTED FAILURE MSG ***
+#

@@ -1,0 +1,66 @@
+# j2-subyt-extension-tests
+# type conversions -- to verify that input-output conversions work as expected 
+#  -- testing the actual output of the filter `| xsd (value, type, quote)`
+#  -- for various types 
+# == xsd:date formatting  =================================================
+# ----  from literal in template ---------------------------------------------
+
+= reset assignments
+?< 
+  {{ "1970-05-06"                 |xsd('date') }}
+?< 
+  {{ "1970-05-06T16:25:50+02:00"  |xsd('DATE') }}
+$>
+  '1970-05-06'^^xsd:date 
+#
+
+# verify double quote option
+= reset assignments
+?<
+  {{ "2025-09-25"          | xsd('xsd:date', '"') }}
+?<
+  {{ "2025-09-25T12:12:12" | xsd('xsd:date', '"') }}
+?<
+  {{ txt_Sep25_2025_5pm    | xsd('date', '"') }}
+$>
+  "2025-09-25"^^xsd:date
+#
+
+# ---- from context variables  -----------------------------------------------
+# ...... acceptable date value variants ......................................
+= -- json does not allow to define typed dates, have to rely on BASE_CONTEXT
+?<
+  {{ dt_May6_1970  | xsd('date') }}
+$>
+  '1970-05-06'^^xsd:date
+#
+
+
+# ...... inacceptable date values .............................................
+= add these to the BASE_CONTEXT:
+  {
+    "txt_any"   : "anything",
+    "txt_nodat" : "3/14/15",
+    "errmsg"    : "*** EXPECTED FAILURE MSG ***"
+  }
+?<
+  {{ errmsg }}
+?<
+  {{ "anything"          | xsd('date', fb=errmsg) }}
+?<
+  {{ "3/14/15"           | xsd('date', fb=errmsg) }}
+?<
+  {{ txt_any             | xsd('date', fb=errmsg) }}
+?<
+  {{ txt_nodat           | xsd('date', fb=errmsg) }}
+?<
+  {{ dttm_Sep25_2025_5pm | xsd('date', fb=errmsg) }}
+?<
+  {{ none                | xsd('date', fb=errmsg) }}
+?<
+  {{ list_none           | xsd('date', fb=errmsg) }}
+?<
+  {{ dict_none           | xsd('date', fb=errmsg) }}
+$>
+  *** EXPECTED FAILURE MSG ***
+#

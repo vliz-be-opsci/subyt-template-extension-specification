@@ -1,0 +1,37 @@
+# j2-subyt-extension-tests
+# type conversions -- to verify that input-output conversions work as expected 
+#  -- testing the actual output of the filter `| xsd (value, type, quote)`
+#  -- for various types 
+# == xsd:anyURI formatting  ================================================
+
+= -- pure literals testing
+? 
+  {{ "https://example.org/for/testing" | xsd('anyuri')}}  
+$ 
+  'https://example.org/for/testing'^^xsd:anyURI
+? 
+  {{ "https://example.org/for/te?st#ing" | xsd('xsd:anyuri')}}  
+$ 
+  'https://example.org/for/te?st#ing'^^xsd:anyURI
+? 
+  {{ "https://example.org/for/[testing]" | xsd('xsd:anyURI')}}  
+$ 
+  'https://example.org/for/%5Btesting%5D'^^xsd:anyURI
+# --
+
+# ...... unacceptable uri values .............................................
+= add these to the BASE_CONTEXT:
+  {
+    "errmsg"  : "*** EXPECTED FAILURE MSG ***"
+  }
+?<
+  {{ errmsg }}
+?<
+  {{ none                | xsd('anyuri', fb=errmsg) }}
+?<
+  {{ list_none           | xsd('anyuri', fb=errmsg) }}
+?<
+  {{ dict_none           | xsd('anyuri', fb=errmsg) }}
+$>
+  *** EXPECTED FAILURE MSG ***
+#

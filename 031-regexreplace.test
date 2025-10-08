@@ -1,0 +1,20 @@
+# j2-subyt-extension-tests
+# regexreplace(find, replace, text) function - 
+#   - find: regex pattern to find matches in the text
+#   - replace: replacement text to be inserted where matches are detected
+#   - text: source to be altered
+# == regexreplace() evaluation ===============================================
+# ----  from literal in template ---------------------------------------------
+
+= -- reset assignments
+? -- 
+  {{ 
+    regexreplace(
+      "^[^:]*:",
+      "",
+      "all-after-semicolon:is-kept"
+    )
+  }}
+$ --
+  is-kept
+# --

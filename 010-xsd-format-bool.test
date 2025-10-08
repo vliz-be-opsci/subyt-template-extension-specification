@@ -1,0 +1,97 @@
+# j2-subyt-extension-tests
+# type conversions -- to verify that input-output conversions work as expected 
+#  -- testing the actual output of the filter `| xsd (value, type, quote)`
+#  -- for various types 
+# == xsd:boolean formatting  =================================================
+# ----  from literal in template ---------------------------------------------
+
+= reset assignments
+? -- literals in template
+  {{ "true" |xsd('boolean') }}
+? -- explicitsingle quote
+  {{ "true" |xsd('BOOLEAN', "'") }}
+? -- literal typed boolean
+  {{ true   |xsd('xsd:boolean') }}
+? -- literal typed int
+  {{ 1      |xsd('boolean') }}
+$
+  'true'^^xsd:boolean 
+#
+
+# verify double quote option
+= reset assignments
+?
+  {{ "true"|xsd('boolean', '"') }}
+?
+  {{ True  |xsd('boolean', '"') }}
+?
+  {{ 1     |xsd('boolean', '"') }}
+$
+  "true"^^xsd:boolean
+#
+
+# ---- from context variables  -----------------------------------------------
+# ...... boolean true values .................................................
+= use BASE_CONTEXT
+?
+  {{ bool_t   | xsd('boolean') }}
+?
+  {{ int_1    | xsd('boolean') }}
+?
+  {{ int_11   | xsd('boolean') }}
+?
+  {{ txt_any  | xsd('boolean') }}
+?
+  {{ txt_true | xsd('boolean') }}
+$
+  'true'^^xsd:boolean
+#
+
+# ...... boolean false values ................................................
+= all needed vars are in the BASE_CONTEXT
+?
+  {{ "0"       | xsd('boolean') }}
+?
+  {{ "Off"     | xsd('boolean') }}
+?
+  {{ "No"      | xsd('boolean') }}
+?
+  {{ "false"   | xsd('boolean') }}
+?
+  {{ ""        | xsd('boolean') }}
+?
+  {{ int_0     | xsd('boolean') }}
+?
+  {{ txt_none  | xsd('boolean') }}
+?
+  {{ txt_false | xsd('boolean') }}
+$
+  'false'^^xsd:boolean
+# 
+
+# ...... boolean unresolvable values .........................................
+= most needed variables are in the BASE_CONTEXT, except:
+  {
+    "errmsg"    : "*** EXPECTED FAILURE MSG ***"
+  }
+?
+  {{ errmsg }}
+?
+  {{ null       | xsd('boolean', fb=errmsg) }}
+?
+  {{ []         | xsd('boolean', fb=errmsg) }}
+?
+  {{ {}         | xsd('boolean', fb=errmsg) }}
+?
+  {{ none       | xsd('boolean', fb=errmsg) }}
+?
+  {{ list_none  | xsd('boolean', fb=errmsg) }}
+?
+  {{ list_chars | xsd('boolean', fb=errmsg) }}
+?
+  {{ dict_none  | xsd('boolean', fb=errmsg) }}
+?
+  {{ dict_map   | xsd('boolean', fb=errmsg) }}
+$
+  *** EXPECTED FAILURE MSG ***
+#

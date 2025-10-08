@@ -1,0 +1,113 @@
+# j2-subyt-extension-tests
+# type conversions -- to verify that input-output conversions work as expected 
+#  -- testing the actual output of the filter `| xsd (value, type, quote)`
+#  -- for various types 
+# == xsd:string formatting  ================================================
+# ---- basics and typical chars that need attention ------------------------
+
+? -- hello in squote
+  {{ "Hello, world!"  | xsd('string', '"') }}
+$  
+  "Hello, world!"^^xsd:string
+? -- hello in dquote 
+  {{ "Hello, world!"  | xsd('String')  }}
+$ 
+  'Hello, world!'^^xsd:string
+#
+? -- squote in squote
+  {{ "'"              | xsd('string')  }}
+?
+  {{ txt_squote       | xsd('string')  }}
+$
+  '\''^^xsd:string
+? -- squote in dquote
+  {{ "'"              | xsd('string', '"')  }}
+?
+  {{ txt_squote       | xsd('string', '"')  }}
+$
+  "'"^^xsd:string
+#
+? -- dquote in squote
+  {{  '"'             | xsd('xsd:string')  }}
+? -- dquote in squote
+  {{  txt_dquote      | xsd('xsd:string')  }}
+$
+  '"'^^xsd:string
+? -- dquote in dquote
+  {{ '"'              | xsd('string', '"') }}
+? 
+  {{ txt_dquote       | xsd('string', '"') }}
+$
+  "\""^^xsd:string
+#
+? -- be sure typical html escaping is disabled 
+  {{ ">'<"            | xsd('string')      }}
+$
+  '>\'<'^^xsd:string
+#
+? -- newline to force triple-quote variant
+  {{ "\n"             | xsd('string')      }}
+? 
+  {{  txt_nl          | xsd('string')      }}
+$
+  '''
+  '''^^xsd:string
+? 
+  {{ "\n"             | xsd('string', '"') }}
+? 
+  {{  txt_nl          | xsd('string', '"') }}
+$
+  """
+  """^^xsd:string
+#
+? -- backslash
+  {{ "\\"             | xsd('string')      }}
+?
+  {{ txt_bslash       | xsd('string')      }}
+$
+  '\\'^^xsd:string
+#
+? -- multiline in 3-squote
+  {{ txt_long         | xsd('string')      }}
+$
+  '''This is a long text
+  that spans multiple lines
+  and contains \'single\' and "double" quotes
+  and a backslash \\.'''^^xsd:string
+? -- multiline in 3-dquote
+  {{ txt_long         | xsd('string', '"') }}
+$
+  """This is a long text
+  that spans multiple lines
+  and contains 'single' and \"double\" quotes
+  and a backslash \\."""^^xsd:string
+#
+
+# ---- language variants -----------------------------------------------------
+? 
+  {{ "ceci n'est pas une texte" | xsd('@fr') }}
+$
+   'ceci n\'est pas une texte'@fr
+?
+  {{ "As \\ said before"        | xsd('@en') }}
+$
+  'As \\ said before'@en
+#
+
+
+# ...... inacceptable string values .............................................
+= add these to the BASE_CONTEXT:
+  {
+    "errmsg"  : "*** EXPECTED FAILURE MSG ***"
+  }
+?<
+  {{ errmsg }}
+?<
+  {{ none                | xsd('string', fb=errmsg) }}
+?<
+  {{ list_none           | xsd('string', fb=errmsg) }}
+?<
+  {{ dict_none           | xsd('string', fb=errmsg) }}
+$>
+  *** EXPECTED FAILURE MSG ***
+#

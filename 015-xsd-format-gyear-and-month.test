@@ -1,0 +1,95 @@
+# j2-subyt-extension-tests
+# type conversions -- to verify that input-output conversions work as expected 
+#  -- testing the actual output of the filter `| xsd (value, type, quote)`
+#  -- for various types 
+# == xsd:gyear formatting  ================================================
+
+= standard BASE_CONTEXT suffices for these
+? -- literal tests
+  {{ "2025"              | xsd('gyear') }}
+? 
+  {{ 2025                | xsd('xsd:gYear') }}
+? 
+  {{ dt_Sep25_2025       | xsd('YEAR') }} 
+? 
+  {{ dttm_Sep25_2025_5pm | xsd('yyyy') }} 
+$ 
+  '2025'^^xsd:gYear
+#
+
+= -- some not so trivial cases of the gYear spec
+? --
+  {{ 12004     | xsd('gyear') }}
+? --
+  {{ "12004"   | xsd('gyear') }}
+$ --
+  '12004'^^xsd:gYear
+? --
+  {{ 922       | xsd('gyear') }} 
+? --
+  {{ "922"     | xsd('gyear') }} 
+$ --
+  '0922'^^xsd:gYear
+? --
+  {{ -45       | xsd('gyear') }} 
+$ --
+  '-0045'^^xsd:gYear
+# --
+
+
+# == xsd:gyearmonth formatting  ===============================================
+
+= standard BASE_CONTEXT suffices for these
+? -- literal tests
+  {{ "2025-09"           | xsd('gyearmonth') }}
+? 
+  {{ dt_Sep25_2025       | xsd('xsd:GYEARMonth') }} 
+? 
+  {{ dttm_Sep25_2025_5pm | xsd('yyyy-mm') }} 
+? 
+  {{ txt_Sep25_2025_5pm  | xsd('year-month') }} 
+$ 
+  '2025-09'^^xsd:gYearMonth
+#
+
+= -- some not so trivial cases of the gYearaMonth spec
+? --
+  {{ "922-09"     | xsd('gyearmonth') }} 
+$ --
+  '0922-09'^^xsd:gYearMonth
+? --
+  {{ "-45-05"     | xsd('gyearmonth') }} 
+$ --
+  '-0045-05'^^xsd:gYearMonth
+# --
+
+# ...... inacceptable year/yearmonth values ..................................
+= add these to the BASE_CONTEXT:
+  {
+    "txt_any"    : "anything",
+    "txt_nodat"  : "3/14/15",
+    "errmsg_gy"  : "*** EXPECTED FAILURE GYEAR MSG ***",
+    "errmsg_gym" : "*** EXPECTED FAILURE GYEARMONTH MSG ***"
+  }
+?<
+  {{ errmsg_gy }}
+  {{ errmsg_gym }}
+?<
+  {{ txt_any             | xsd('gyear', fb=errmsg_gy) }}
+  {{ txt_any             | xsd('gyearmonth', fb=errmsg_gym) }}
+?<
+  {{ txt_nodat           | xsd('gyear', fb=errmsg_gy) }}
+  {{ txt_nodat           | xsd('gyearmonth', fb=errmsg_gym) }}
+?<
+  {{ none                | xsd('gyear', fb=errmsg_gy) }}
+  {{ none                | xsd('gyearmonth', fb=errmsg_gym) }}
+?<
+  {{ list_none           | xsd('gyear', fb=errmsg_gy) }}
+  {{ list_none           | xsd('gyearmonth', fb=errmsg_gym) }}
+?<
+  {{ dict_none           | xsd('gyear', fb=errmsg_gy) }}
+  {{ dict_none           | xsd('gyearmonth', fb=errmsg_gym) }}
+$>
+  *** EXPECTED FAILURE GYEAR MSG ***
+  *** EXPECTED FAILURE GYEARMONTH MSG ***
+#

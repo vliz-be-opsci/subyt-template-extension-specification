@@ -1,0 +1,33 @@
+# j2-subyt-extension-tests
+# uritexpand(template [,context]) function - applying uri-templates RFC 6570
+#  - template needs to be a rfc6570 compliant uritemplates
+#  - the context (dict) is optional 
+#      * if provided it feeds directly the context to expand the uritemplate
+#      * if not provided we fallback to the surrounding template-context
+# == uritexpand application  =================================================
+# ----  from literal in template ---------------------------------------------
+
+= -- reset assignments
+? -- no actual expansion in this template
+  {{ uritexpand("http://example.org/") |uri }}
+$ --
+  <http://example.org/>
+#
+
+= -- no specific context
+? -- template to pass via argument
+  {{ uritexpand(
+      "https://host.dom/item{#frag}",
+      {"frag": "some"}
+    ) | uri
+  }}
+= -- with specific argument
+  {"frag": "some"}
+? -- template can implicitly fallback to using the context
+  {{ uritexpand(
+      "https://host.dom/item{#frag}"
+    ) | uri
+  }}
+$ --
+  <https://host.dom/item#some>
+# --

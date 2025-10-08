@@ -1,0 +1,33 @@
+# j2-subyt-extension-tests
+# uri filter - producing useable <> references
+# == uri <> formatting  ======================================================
+# ----  from literal in template ---------------------------------------------
+
+= reset assignments
+? 
+  {{ "http://example.org/" |uri }}
+$
+  <http://example.org/>
+? 
+  {{ "http://example.org/[x]" |uri }}
+$
+  <http://example.org/%5Bx%5D>
+#
+
+= -- use BASE_CONTEXT
+? -- show this works for paths as well
+  {{ "/anything"     |uri }}
+? -- show this works for paths as well
+  {{ ("/" ~ txt_any) |uri }}
+$
+  </anything>
+#
+
+= -- use BASE_CONTEXT
+? -- show this works for fragments too
+  {{ "#anything"     | uri }}
+? -- show this works for fragments too
+  {{ ("#" ~ txt_any) | uri }}
+$
+  <#anything>
+#
