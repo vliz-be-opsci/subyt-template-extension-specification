@@ -237,3 +237,29 @@ Some suggestions to those seeking to implement an automated test platform for th
 * As a counterpart, also remove empty lines produced in template results before comparing them to expected result-output.
 * Note that comment-lines at least complete any previous section, so they require more attention than just ignoring them.
 * Keep track of original file locations and line-numbers to provide helpful error-reports about what portions are not "conforming"
+
+## Recommended usage scenario
+
+TODO add text as suggested in [#3](https://github.com/vliz-be-opsci/subyt-template-extension-specification/issues/3)
+
+To check your own implementations for compliance with these conformity-tests we recommend linking them into your project through git submodules.
+This allows to stay in sync with the latest version of these tests.
+
+``` bash
+# get into your implmentation project and make sure you are synced up
+$ cd to/your/implementation/repo
+$ git pull
+
+# set up the submodule
+$ touch .gitmodules
+$ git clone git@github.com:vliz-be-opsci/subyt-template-extension-specification.git ./to/relative/path/for/content
+$ git submodule add git@github.com:vliz-be-opsci/subyt-template-extension-specification.git ./to/relative/path/for/content
+$ git submodule init
+$ git submodule update
+
+# commit and push this setup to your project repo
+$ git add .gitmodules ./to/relative/path/for/content
+$ git commit -m "setting up gitmodule for subyt performance checks"
+$ git push
+```
+An example of this can be found in the [py-sema project](https://github.com/vliz-be-opsci/py-sema) 
