@@ -20,6 +20,10 @@ In this space su-by-t targets to take a very pragmatical position:
 
 This document describes the set of filters and functions these templating engines should implement to support text/turtle generation.
 
+## Known Implementations
+
+* [py-sema](https://github.com/vliz-be-opsci/py-sema) provides a python implementation that adds these extensions to jinja2
+
 ## About conformance testing
 
 In order for these various template-engines to provide and validate conformant implementations of these subyt-template extensions a formal language-neutral test-compliance-format has been designed.
