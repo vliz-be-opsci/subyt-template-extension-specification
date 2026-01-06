@@ -82,6 +82,12 @@ $
   and contains 'single' and \"double\" quotes
   and a backslash \\."""^^xsd:string
 #
+? -- escaping with triple variants
+  {{ "'\n'" | xsd('string') }}
+$ 
+  '''\'
+  \''''^^xsd:string
+#
 
 # ---- language variants -----------------------------------------------------
 ? 
