@@ -15,6 +15,7 @@ theme:
 nav:
   - Home: index.md
   - Specification: specification.md
+  - Authoring Guide: authoring.md
   - Compliance: compliance.md
 
 markdown_extensions:
