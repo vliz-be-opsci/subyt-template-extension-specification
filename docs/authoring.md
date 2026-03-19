@@ -6,7 +6,7 @@ Where the [specification](specification.md) describes **what** the available fil
 The rules are numbered so they can be referenced directly (e.g. *"this template violates T03"*).
 Each rule follows the same pattern:
 
-> **code** · title · short description · code example(s) · known problems if the rule is not followed
+> **code** · title · short description · code example(s) · consequences if the rule is not followed
 
 ---
 
@@ -32,11 +32,16 @@ Input:       path/to/main-input.csv  (iterated as `_`)
 Sets:
     - path/to/lookup.csv  as lookup
 Subyt settings:
-    no-iterate: false
+    iteration:   true   # true (default) = one template render per input row;
+                        # false = render template once for the entire input set
+    ignorecase:  true   # true (default) = all input keys lowercased automatically;
+                        # false = keys used as-is (case-sensitive)
+    flatten:     true   # true (default) = nested dict keys joined with '.' separator;
+                        # false = nested dicts kept as-is
 -#}
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - Another developer (or yourself later) must read through the whole template to understand its inputs and purpose.
     - Automated documentation or dependency-graph tooling cannot extract metadata.
     - Template collections become hard to maintain as they grow.
@@ -59,7 +64,7 @@ templates/
   my-type.j2           # ✗ HTML-escaping on by default – angle brackets will break
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - URI references (`<http://example.org/thing>`) are HTML-escaped into `&lt;http://...&gt;`, producing invalid Turtle.
     - Typed literals (`'value'^^xsd:date`) may have their `^` characters escaped.
 
@@ -80,7 +85,7 @@ Redefining them in your template will silently replace the built-in behaviour wi
 {% macro safe_local_id(value) %}{{ value | replace(' ', '%20') }}{% endmacro %}
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - Built-in validation (e.g. `| uri` rejecting malformed URIs) is silently bypassed.
     - Templates that import or include your file also inherit the broken override.
     - Test failures caused by the override will be very hard to diagnose.
@@ -89,10 +94,15 @@ Redefining them in your template will silently replace the built-in behaviour wi
 
 ### T04 · Centralise Identifier Logic in a Shared Macro File
 
-**Provide a dedicated include file (e.g. `includes/identifiers.ttl`) that defines macros for constructing URIs for each entity type in a consistent manner.**
+**Provide a dedicated include file that defines macros for constructing URIs for each entity type in a consistent manner.**
 
 URI construction logic often needs to be reused across multiple templates in the same project.
 Centralising it in one file ensures all templates produce the same identifier for the same entity and makes it easy to update the pattern in one place.
+
+Two folder conventions are commonly used — choose one and apply it consistently:
+
+- **`includes/`** — groups all reusable snippets (prefixes, macros) together, close to standard Jinja usage (e.g. `includes/identifiers.ttl`, `includes/prefixes.ttl`).
+- **`macros/`** — separates macro files from other includes, making the distinction between "prefix declarations" and "callable macros" explicit (e.g. `macros/identifiers.ttl`, `prefixes/prefixes.ttl`).
 
 ```jinja
 {# includes/identifiers.ttl #}
@@ -111,7 +121,7 @@ Centralising it in one file ensures all templates produce the same identifier fo
 .
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - URI patterns for the same entity type drift between templates over time.
     - A single change to a URI pattern requires edits in many files.
     - Inconsistent identifiers break `owl:sameAs` chains and federated queries.
@@ -143,7 +153,7 @@ Use `fb=''` (fallback) to gracefully skip optional properties that may be absent
 ex:thing ex:optionalScore {{ _.score | xsd('double', fb='') }} .
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - Numeric values are serialised as plain strings (`"42"` instead of `"42"^^xsd:integer`).
     - Invalid values (e.g. a non-date string passed to a date field) will silently produce malformed output instead of raising an error at generation time.
     - SPARQL queries relying on typed comparisons (`FILTER(?count > 10)`) will not work correctly.
@@ -166,7 +176,7 @@ ex:thing owl:sameAs {{ _.external_uri }} .
 ex:thing owl:sameAs {{ _.external_uri | uri }} .
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - A URI containing spaces or non-ASCII characters produces invalid Turtle.
     - Parsers / linters will reject the output.
     - Missing `<…>` delimiters cause the URI to be interpreted as a prefixed name.
@@ -188,7 +198,7 @@ ex:thing ex:hasPage <http://example.org/pages/{{ _.title }}> .
 ex:thing ex:hasPage {{ uritexpand("http://example.org/pages/{title}", _) | uri }} .
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - Special characters in field values silently break the URI.
     - The resulting URIs may differ across implementations that handle template expansion differently.
     - Federated queries and owl:sameAs links fail when URIs are not canonical.
@@ -218,7 +228,7 @@ For a URI reference pair (prefix + local part) that should only appear together:
     {{ unite( unite('pfx', optional_local_part, sep=':'), 'ex:predicate', sep=' ') }} ;
 ```
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - Verbose if/endif blocks obscure the intent of the template.
     - A missing endif or wrong nesting creates whitespace or syntax errors in the output.
     - Dangling semicolons (`;`) at the end of a triple block cause invalid Turtle.
@@ -242,7 +252,9 @@ Good test data covers:
 Deliberately try to break the template.
 If it doesn't break cleanly (raising an informative error), that is itself a finding to address.
 
-!!! failure "Problems if you skip this"
+The `.test` files in this specification repository provide a useful reference for the pattern of pairing inputs with expected outputs — the same approach can be applied to your own templates: define an input record, run the template, and capture the expected Turtle output as a reference to check against.
+
+!!! failure "Consequences if you skip this"
     - Edge-case inputs that were never tested silently produce malformed or empty output at production time.
     - A template that never raises errors on bad input may be hiding silent data loss.
 
@@ -263,10 +275,11 @@ Recommended tools:
 | [rapper](http://librdf.org/raptor/rapper.html) (Raptor) | Turtle, N-Triples, … | `rapper -i turtle my-output.ttl` |
 | [rdfpipe](https://rdflib.readthedocs.io/en/stable/intro_to_parsing.html) (rdflib) | Turtle, TriG, … | `rdfpipe -i turtle my-output.ttl` |
 | [EasyRDF online validator](https://www.easyrdf.org/converter) | Turtle | browser-based |
+| [TTL validator](http://ttl.summerofcode.be/) | Turtle | browser-based |
 
 Integrate this step into your CI pipeline so every generated file is validated automatically.
 
-!!! failure "Problems if you skip this"
+!!! failure "Consequences if you skip this"
     - Syntactically invalid output reaches consumers who then face cryptic parser errors.
     - Silent encoding or quoting bugs are discovered only in production.
     - Downstream tooling (triple stores, reasoners) rejects or partially loads the file.
