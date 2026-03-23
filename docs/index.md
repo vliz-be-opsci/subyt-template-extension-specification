@@ -14,4 +14,5 @@ This specification defines:
 ## Sections
 
 - [Specification](specification.md)
+- [Authoring Guide](authoring.md)
 - [Compliance & Test Format](compliance.md)

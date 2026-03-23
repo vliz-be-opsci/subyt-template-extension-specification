@@ -20,6 +20,8 @@ In this space su-by-t targets to take a very pragmatical position:
 
 This document describes the set of filters and functions these templating engines should implement to support text/turtle generation.
 
+For practical guidance on how to use these extensions effectively when writing templates, see the [Authoring Guide](authoring.md).
+
 ## Known Implementations
 
 * [py-sema](https://github.com/vliz-be-opsci/py-sema) provides a python implementation that adds these extensions to jinja2
