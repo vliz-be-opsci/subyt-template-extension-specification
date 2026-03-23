@@ -1,0 +1,1370 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formal specification and compliance documentation">
+      
+      
+        <meta name="author" content="VLIZ Opsci">
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../authoring/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Specification - SU-by-T Template Extension Specification</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#subyt-turtle-support-extensions-for-jinja3-templating-and-its-php-port-twig" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SU-by-T Template Extension Specification" class="md-header__button md-logo" aria-label="SU-by-T Template Extension Specification" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SU-by-T Template Extension Specification
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Specification
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/vliz-be-opsci/subyt-template-extension-specification" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Specification
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../authoring/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Authoring Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../compliance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Compliance
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SU-by-T Template Extension Specification" class="md-nav__button md-logo" aria-label="SU-by-T Template Extension Specification" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SU-by-T Template Extension Specification
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/vliz-be-opsci/subyt-template-extension-specification" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about-semantic-uplifting-by-templating-su-by-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        About Semantic Uplifting by Templating (su-by-t)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Implementations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-conformance-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        About conformance testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-guide-for-subyt-filters-and-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference guide for subyt filters and functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference guide for subyt filters and functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xsdtypename-quotefbnone-formatting-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        | xsd(typename[, quote="'"][,fb=None]) formatting filter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="| xsd(typename[, quote=&#34;&#39;&#34;][,fb=None]) formatting filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdboolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdinteger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdfloat-and-typename-xsddouble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:float and typename = xsd:double
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsddate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsddatetime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:dateTime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdgyear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:gYear
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdgyearmonth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:gYearMonth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdanyuri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:anyURI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdlanguage-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:@language-code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-auto-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = auto-date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-auto-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = auto-number
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-auto-any" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = auto-any
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uri-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        | uri filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uritexpandtemplate-context-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uritexpand(template[, context ]) function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regexreplacepattern-replace-content-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        regexreplace(pattern, replace, content) function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapmapping_data-fromname-toname-cachekey-constructor-and-mapapplyrecord-fromname-toname-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        map(mapping_data, fromname, toname[, cachekey]) constructor and map.apply(record, fromname, toname) function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authoring Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compliance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#about-semantic-uplifting-by-templating-su-by-t" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        About Semantic Uplifting by Templating (su-by-t)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-implementations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known Implementations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#about-conformance-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        About conformance testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference-guide-for-subyt-filters-and-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reference guide for subyt filters and functions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reference guide for subyt filters and functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#xsdtypename-quotefbnone-formatting-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        | xsd(typename[, quote="'"][,fb=None]) formatting filter
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="| xsd(typename[, quote=&#34;&#39;&#34;][,fb=None]) formatting filter">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdboolean" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:boolean
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdinteger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:integer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdfloat-and-typename-xsddouble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:float and typename = xsd:double
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsddate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsddatetime" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:dateTime
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdgyear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:gYear
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdgyearmonth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:gYearMonth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdanyuri" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:anyURI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:string
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-xsdlanguage-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = xsd:@language-code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-auto-date" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = auto-date
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-auto-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = auto-number
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#typename-auto-any" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        typename = auto-any
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uri-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        | uri filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uritexpandtemplate-context-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        uritexpand(template[, context ]) function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#regexreplacepattern-replace-content-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        regexreplace(pattern, replace, content) function
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mapmapping_data-fromname-toname-cachekey-constructor-and-mapapplyrecord-fromname-toname-function" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        map(mapping_data, fromname, toname[, cachekey]) constructor and map.apply(record, fromname, toname) function
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="subyt-turtle-support-extensions-for-jinja3-templating-and-its-php-port-twig">subyt :: turtle-support-extensions for jinja3 templating (and its php port 'twig')<a class="headerlink" href="#subyt-turtle-support-extensions-for-jinja3-templating-and-its-php-port-twig" title="Permanent link">&para;</a></h1>
+<h2 id="about-semantic-uplifting-by-templating-su-by-t">About Semantic Uplifting by Templating  (su-by-t)<a class="headerlink" href="#about-semantic-uplifting-by-templating-su-by-t" title="Permanent link">&para;</a></h2>
+<p>Many mechanisms exist to perform semantic-uplifting, i.e. the common depiction of any automated means for the production of RDF triples.</p>
+<p>Generally these techniques are distributed across a continuum, in a solution space with many dimensions and extreme boundaries.
+This means they are:
+* custom made to handle one case, versus generic an reusable;
+* aimed for a developer audience, versus more intended to serve domain or object-model experts;
+* tied to a specific programming language, or open to independent implementations; and
+* requiring different levels of "RDF" awareness.</p>
+<p>In this space su-by-t targets to take a very pragmatical position:
+* returning to proven web-template approaches for producing text/html and text/xml formats;
+* adding simple extensions to support text/turtle;
+* opportunistically fall back to existing cross-language implementations;
+* allowing developers with a basis web-templating approach to integrate this in automated systems; and
+* separating the actual template-writing to be done by domain experts with basis understanding of RDF, specifically in text/turtle.</p>
+<p>This document describes the set of filters and functions these templating engines should implement to support text/turtle generation.</p>
+<p>For practical guidance on how to use these extensions effectively when writing templates, see the <a href="../authoring/">Authoring Guide</a>.</p>
+<h2 id="known-implementations">Known Implementations<a class="headerlink" href="#known-implementations" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://github.com/vliz-be-opsci/py-sema">py-sema</a> provides a python implementation that adds these extensions to jinja2</li>
+</ul>
+<h2 id="about-conformance-testing">About conformance testing<a class="headerlink" href="#about-conformance-testing" title="Permanent link">&para;</a></h2>
+<p>In order for these various template-engines to provide and validate conformant implementations of these subyt-template extensions a formal language-neutral test-compliance-format has been designed.</p>
+<p>Our tests are of course following this format. They can be found in the various <code>*.test</code> files in this package.</p>
+<p>The format itself is described in a separate <a href="../compliance/">test conformance format</a> document.</p>
+<h2 id="reference-guide-for-subyt-filters-and-functions">Reference guide for subyt filters and functions<a class="headerlink" href="#reference-guide-for-subyt-filters-and-functions" title="Permanent link">&para;</a></h2>
+<h3 id="xsdtypename-quotefbnone-formatting-filter"><code>| xsd(typename[, quote="'"][,fb=None])</code> formatting filter<a class="headerlink" href="#xsdtypename-quotefbnone-formatting-filter" title="Permanent link">&para;</a></h3>
+<p>This filter produces n3-compliant syntax for literal values to have an explicit datatype-indicator.
+In the process it checks the compatibility of the input, and ensures adequate formatting before output.</p>
+<p>Depending on the chosen typename other "input-compatibility" rules apply</p>
+<p>Arguments:
+* <code>typename</code> Should match one of the described types in the following sub-sections. It is case-insensitive and can ommit the explicit 'xsd:' prefix for brevity. For some of these additional variants to specify the type are accepted as well.
+* <code>quote</code> Indicates the single <code>'</code> or double <code>"</code> quote character to be used to capture the value. When ommitted the single-quote <code>'</code> is assumed as default.
+* <code>fb</code> Allows to make the operation of the formatting 'lenient' to errors -- when unavailable (i.e. None/undefined/null) any processing error should make the templating as a whole break, when available it should be a string that represents the fall-back resulting output in case of those errors.</p>
+<h4 id="typename-xsdboolean">typename = <code>xsd:boolean</code><a class="headerlink" href="#typename-xsdboolean" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:boolean</code> formatting to the provided input.</p>
+<p>Leading to either <code>'true'^^xsd:boolean</code> or <code>'false'^^xsd:boolean</code></p>
+<p>This requires the input to be one of the following:
+* a native boolean
+* a native string, in which case all of <code>''</code>, <code>'0'</code>, <code>'off'</code>, <code>'false'</code>, <code>'no'</code> (ignoring case) are considered <code>False</code> and all other non-empty strings resolve to <code>True</code>
+* a native numeric value (integer or floating-point), in which case <code>0</code> and <code>0.0</code> are considered <code>False</code> and all other values are <code>True</code></p>
+<p>Any other input case, like:</p>
+<ul>
+<li>None, undefined, null, or template-implementation equivalents</li>
+<li>dates, datetime values,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-xsdinteger">typename = <code>xsd:integer</code><a class="headerlink" href="#typename-xsdinteger" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:integer</code> formatting to the provided input.</p>
+<p>Leading to output of the form <code>'-?[1-9][0-9]*'^^xsd:integer</code></p>
+<p>This requires the input to be one of the following:
+* a native integer numeric value
+* a native string for which the interpretation as integer works out and its round-trip to string format exactly matches the input.  This excludes surrounding whitespace or leading zeroes. The template should explicitely deal with those cases.</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>boolean values,</li>
+<li>numeric floating-point values,</li>
+<li>strings that do not follow the round-trip rule,</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>dates, datetime values,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-xsdfloat-and-typename-xsddouble">typename = <code>xsd:float</code> and typename = <code>xsd:double</code><a class="headerlink" href="#typename-xsdfloat-and-typename-xsddouble" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:float</code> respectively <code>xsd:double</code> formatting to the provided input.</p>
+<p>Leading to output of the form <code>'-?[0-9]*\.[0-9]*'^^xsd:(float|double)</code></p>
+<p>The processing of both follows the same rules. <code>double</code> should probably be the principle choice, but since the distinct <code>xsd:float</code> type does exist it should be supported.</p>
+<p>This requires the input to be one of the following:
+* a native numeric floating-point value
+* a native string, for which the interpretation as a floating-point value works out.</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>boolean values,</li>
+<li>numeric integer values,</li>
+<li>strings that do not parse as floating point values,</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>dates, datetime values,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-xsddate">typename = <code>xsd:date</code><a class="headerlink" href="#typename-xsddate" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:date</code> formatting to the provided input.</p>
+<p>Leading to output of the form <code>'YYYY-MM-DD'^^xsd:date</code></p>
+<p>This requires the input to be one of the following:
+* a native date
+* a native string, that strictly can be parsed as a iso8601 date "YYYY-MM-DD"</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>boolean, and numeric values,</li>
+<li>strings that are not strictly in the desired format,</li>
+<li>datetime values,</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-xsddatetime">typename = <code>xsd:dateTime</code><a class="headerlink" href="#typename-xsddatetime" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:dateTime</code> formatting to the provided input.</p>
+<p>Leading to output of the form <code>'YYYY-MM-DDThh:mm:ss[+tz:mm]'^^xsd:dateTime</code></p>
+<p>This requires the input to be one of the following:
+* a native datetime value (which may or may not carry timezone information)
+* a native string, that can be correctly parsed as a iso8601 datetime value (again with optional timezone part)</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>boolean, and numeric values,</li>
+<li>strings that are not strictly in the desired format,</li>
+<li>date values,</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<p>Note: The absence of a timezone fragment is considered an acceptable variant. As such it indicates a datetime value that is not actually localised but to happen 'in local time': i.e. either the context provides a geographic specific location elsewhere, or this value is considered to depict a recurring exact moment that appears across the globe as it occurs in each consecutive timezone.  This also means the formatting process should not inadvertantly impose its own locallity on the interpretation, and thus not add a timezone fragment if none is present in the output.</p>
+<h4 id="typename-xsdgyear">typename = <code>xsd:gYear</code><a class="headerlink" href="#typename-xsdgyear" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:gYear</code> formatting to the provided input.</p>
+<p>Note: additional type-names include (case-ignoring) <code>yyyy</code> and <code>year</code></p>
+<p>Leading to output of the form <code>'-?0YYY'^^xsd:gYear</code></p>
+<p>See https://www.w3.org/TR/xmlschema11-2/#gYear</p>
+<p>This requires the input to be one of the following:
+* a numeric integer value,
+* a native string, matching above integer numeric value
+* a date value,</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>boolean,</li>
+<li>numeric floating-point values,</li>
+<li>strings that are not matching an integer value,</li>
+<li>datetime values,</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-xsdgyearmonth">typename = <code>xsd:gYearMonth</code><a class="headerlink" href="#typename-xsdgyearmonth" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:gYearMonth</code> formatting to the provided input.</p>
+<p>Note: additional type-names include (case-ignoring) <code>yyyy-mm</code> and <code>year-month</code></p>
+<p>Leading to output of the form <code>'-?0YYY-MM'^^xsd:gYearMonth</code></p>
+<p>See https://www.w3.org/TR/xmlschema11-2/#gYearMonth</p>
+<p>This requires the input to be one of the following:
+* a native string, that matches the actual yyyy-mm format
+* a date value</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>boolean, and numeric values,</li>
+<li>strings that are not matching the pattern</li>
+<li>datetime values,</li>
+<li>None, undefined, null, or template-implementationn equivalents,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-xsdanyuri">typename = <code>xsd:anyURI</code><a class="headerlink" href="#typename-xsdanyuri" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:anyURI</code> formatting to the provided input.</p>
+<p>Leading to output of the form <code>'uri-conform-string'^^xsd:anyURI</code></p>
+<p>This requires the input to be one of the following:
+* a native string that is conforming to a valid uri format, if needed by inserting some %HEX-encoding parts</p>
+<p>The applied %HEX-encoding will be part of the output.</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>non-conforming uri strings,</li>
+<li>boolean, numeric, date, datetime values,</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-xsdstring">typename = <code>xsd:string</code><a class="headerlink" href="#typename-xsdstring" title="Permanent link">&para;</a></h4>
+<p>Applies <code>^^xsd:string</code> formatting to the provided input.</p>
+<p>Leading to output of the form <code>'value-text'^^xsd:string</code></p>
+<p>This requires the input to be one of the following:
+* any native scalar format with straightforward textual representation,</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries.</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<p>Note that 'other object instances' are accepted in this case and will be simply 'stringified' according to whatever their coded native string representation is.</p>
+<p>Note about escaping: In turtle both <code>'</code> (single) and <code>"</code> (double) quotes are allowed to surround strings. This leads to those characters themselves to require backslash-<code>\</code>-escaping to be accepted in between them.  Additionally this means a single <code>\</code> itself needs to be represented as <code>\\</code>.</p>
+<p>Note about multiline-strings: Multiline string values (i.e. containing <code>\n</code> newlines) require a triplet-variant of the quote to be used. Making the string-start-end markers actually being <code>'''</code> or <code>"""</code>.</p>
+<h4 id="typename-xsdlanguage-code">typename = <code>xsd:@language-code</code><a class="headerlink" href="#typename-xsdlanguage-code" title="Permanent link">&para;</a></h4>
+<p>Applies <code>@language-code</code> formatting to the provided input.</p>
+<p>Leading to output of the form <code>'my text'@en</code>, <code>'mijn tekst'@nl</code>, and <code>'mon texte'@fr</code></p>
+<p>For this case the same requirements known from the <code>xsd:string</code> case mentioned above for
+* the restrictions to valid inputs, as well as
+* the notes around expected valid output formatting.</p>
+<h4 id="typename-auto-date">typename = <code>auto-date</code><a class="headerlink" href="#typename-auto-date" title="Permanent link">&para;</a></h4>
+<p>Inspects the input and applies the best (most precise) possible date-type to format it.
+So, one of the following will be added (in order of preference / most restrictive first):
+* <code>^^xsd:dateTime</code>
+* <code>^^xsd:date</code>
+* <code>^^xsd:yearMonth</code>
+* <code>^^xsd:year</code></p>
+<p>This requires the input to be one of the following:
+* a dateTime or date object
+* an int that can be used as year
+* a string that can be parsed into one of the supported date formats, i.e. iso8601 with or without time and timezone fragments, or matching either YYYY-MM, or a integer to be used as year</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>Strings that do not fit an understandable date format</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-auto-number">typename = <code>auto-number</code><a class="headerlink" href="#typename-auto-number" title="Permanent link">&para;</a></h4>
+<p>Inspects the input and applies the best (most precise) possible available type to format it.
+So, one of the following will be added (in order of preference / most restrictive first):
+* <code>^^xsd:integer</code>
+* <code>^^xsd:double</code></p>
+<p>This requires the input to be one of the following:
+* a native numeric format, be it integer or floating-point
+* a native string that can be parsed in one of those</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>Strings that do not fit an understandable numeric format</li>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries,</li>
+<li>other object instances</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h4 id="typename-auto-any">typename = <code>auto-any</code><a class="headerlink" href="#typename-auto-any" title="Permanent link">&para;</a></h4>
+<p>Inspects the input and applies the best (most precise) possible available type to format it.
+So, one of the following will be added (in order of preference / most restrictive first):
+* <code>^^xsd:integer</code>
+* <code>^^xsd:boolean</code>
+* <code>^^xsd:double</code>
+* <code>^^xsd:dateTime</code>
+* <code>^^xsd:date</code>
+* <code>^^xsd:yearMonth</code>
+* <code>^^xsd:string</code></p>
+<p>Note: <code>^^xsd:year</code> will not be produced as any input that fits this type would have already be considered as an <code>^^xsd:integer</code> already.</p>
+<p>This support most of the inputs you could imagine:
+* a native boolean
+* a native numeric value
+* a native date or datetime value
+* a string value
+* any object type that has a string representation</p>
+<p>Any other input case, like:</p>
+<ul>
+<li>None, undefined, null, or template-implementation equivalents,</li>
+<li>lists,</li>
+<li>dictionaries.</li>
+</ul>
+<p>is incompatible and will lead to an error (or produce the <code>fb</code> value in lenient mode)</p>
+<h3 id="uri-filter"><code>| uri</code> filter<a class="headerlink" href="#uri-filter" title="Permanent link">&para;</a></h3>
+<p>The <code>| uri</code> filter works very similar to the <code>| xsd('anyURI')</code> in the sense that it will check an safeguard correct URI formatting (and proper %hex-encoding) to the input.</p>
+<p>The main difference though is that this will not add the <code>"uri-here"^^xsd:anyURI</code> formatting, but instead ensuring the <code>&lt;uri-here&gt;</code> format of adding angle-brackets for references in turtle.</p>
+<h3 id="uritexpandtemplate-context-function"><code>uritexpand(template[, context ])</code> function<a class="headerlink" href="#uritexpandtemplate-context-function" title="Permanent link">&para;</a></h3>
+<p>The <code>uritexpand()</code> function allows to expand <a href="https://datatracker.ietf.org/doc/html/rfc6570">RFC 6570 uritemplates</a> by applying available values from the context passed.</p>
+<p>Arguments:
+* <code>template</code> a string holding an RFC 6570 uritemplate with <code>{variable}</code> regions to be expanded
+* <code>context</code> is an optional record (dictionary) that provides in its fields the values to expand the uritemplate</p>
+<p>Note if the context record is not provided, the available global template-context is used.</p>
+<p>A typical application of this function is to combine it with the <code>| uri</code> filter.</p>
+<h3 id="regexreplacepattern-replace-content-function"><code>regexreplace(pattern, replace, content)</code> function<a class="headerlink" href="#regexreplacepattern-replace-content-function" title="Permanent link">&para;</a></h3>
+<p>The <code>regexreplace()</code> function allows to match and replace parts of a string.</p>
+<p>Arguments:
+* <code>pattern</code> a string that holds the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions/Cheatsheet">regular-expression</a> used to search for matching parts that need to be replaced
+* <code>replace</code> a string holding the literal content that is to replace the matched parts
+* <code>content</code> a string holding the input to perform the match-and-replace upon</p>
+<h3 id="mapmapping_data-fromname-toname-cachekey-constructor-and-mapapplyrecord-fromname-toname-function"><code>map(mapping_data, fromname, toname[, cachekey])</code> constructor and <code>map.apply(record, fromname, toname)</code> function<a class="headerlink" href="#mapmapping_data-fromname-toname-cachekey-constructor-and-mapapplyrecord-fromname-toname-function" title="Permanent link">&para;</a></h3>
+<p>The <code>map()</code> function produces a reusable (and cacheable) object, dubbed a <code>ValueMapper</code>, that can in turn be used to map field-values in records.</p>
+<p>Arguments:
+* <code>mapping_data</code> a list of records (typically dictionaries) expected to provide the keys and values to be used in the mapping
+* <code>fromname</code> string name of a field in the mapping-data records. The values of this field are to be used as lookup keys for the actual mapping
+* <code>toname</code> string name of another field in the mapping-data records. The values of this field are to be applied as the resulting value in the actual mapping
+* <code>cachekey</code> (optional) string identifier for the generated mapping object</p>
+<p>The caching is there to allow reusing an earlier instance of the created ValueMapper during processing, without the need to rebuild it in full.
+This a performance enhancing measure only, it should not effect the outcome: starting from the same mapping_data should always lead to same mapping-results.
+It is entirely up to the implementation how it deals with maintaining this cache, and any possible invalidation rules it might apply.</p>
+<p>The provided <code>ValueMapper</code> object is expected to have a single method <code>apply(record, origin_name, target_name[, fallback])</code></p>
+<p>Arguments:
+* <code>record</code> an object (typically dictionary) that holds various fields, of which one holding a value that needs the mapping. This instance must support setting a new value for the mapping result too.
+* <code>origin_name</code> a string name of the field inside the record that holds the value to be mapped
+* <code>target_name</code> a string name of the field inside the record that will be updated (even created) to hold the mapping-result
+* <code>fallback</code> (optional) the value to use as result into the target_name field case the value in the origin_name field is not known as a key inside the <code>ValueMapper</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

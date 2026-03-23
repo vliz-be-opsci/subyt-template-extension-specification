@@ -1,0 +1,1121 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Formal specification and compliance documentation">
+      
+      
+        <meta name="author" content="VLIZ Opsci">
+      
+      
+      
+        <link rel="prev" href="../specification/">
+      
+      
+        <link rel="next" href="../compliance/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Authoring Guide - SU-by-T Template Extension Specification</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#su-by-t-template-authoring-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="SU-by-T Template Extension Specification" class="md-header__button md-logo" aria-label="SU-by-T Template Extension Specification" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SU-by-T Template Extension Specification
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Authoring Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/vliz-be-opsci/subyt-template-extension-specification" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../specification/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Specification
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Authoring Guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../compliance/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Compliance
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="SU-by-T Template Extension Specification" class="md-nav__button md-logo" aria-label="SU-by-T Template Extension Specification" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    SU-by-T Template Extension Specification
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/vliz-be-opsci/subyt-template-extension-specification" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../specification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Specification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authoring Guide
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authoring Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#template-writing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template-Writing Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Template-Writing Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#t01-comment-prelude" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T01 · Comment Prelude
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t02-use-ttl-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T02 · Use .ttl Extension
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t03-do-not-overwrite-built-in-filters-or-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T03 · Do Not Overwrite Built-in Filters or Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t04-centralise-identifier-logic-in-a-shared-macro-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T04 · Centralise Identifier Logic in a Shared Macro File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t05-apply-xsd-to-all-literal-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T05 · Apply | xsd to All Literal Values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t06-apply-uri-to-all-uri-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T06 · Apply | uri to All URI References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t07-use-uritexpand-to-construct-uris-never-string-concatenation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T07 · Use uritexpand() to Construct URIs — Never String Concatenation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t08-use-unite-to-replace-conditional-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T08 · Use unite() to Replace Conditional Blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Tips
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validation Tips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v01-test-with-both-typical-and-edge-case-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V01 · Test with Both Typical and Edge-Case Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v02-validate-the-generated-turtle-trig-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V02 · Validate the Generated Turtle / TriG Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compliance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#template-writing-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template-Writing Rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Template-Writing Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#t01-comment-prelude" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T01 · Comment Prelude
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t02-use-ttl-extension" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T02 · Use .ttl Extension
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t03-do-not-overwrite-built-in-filters-or-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T03 · Do Not Overwrite Built-in Filters or Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t04-centralise-identifier-logic-in-a-shared-macro-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T04 · Centralise Identifier Logic in a Shared Macro File
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t05-apply-xsd-to-all-literal-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T05 · Apply | xsd to All Literal Values
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t06-apply-uri-to-all-uri-references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T06 · Apply | uri to All URI References
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t07-use-uritexpand-to-construct-uris-never-string-concatenation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T07 · Use uritexpand() to Construct URIs — Never String Concatenation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#t08-use-unite-to-replace-conditional-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        T08 · Use unite() to Replace Conditional Blocks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#validation-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation Tips
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Validation Tips">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#v01-test-with-both-typical-and-edge-case-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V01 · Test with Both Typical and Edge-Case Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#v02-validate-the-generated-turtle-trig-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        V02 · Validate the Generated Turtle / TriG Output
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="su-by-t-template-authoring-guide">SU-by-T Template Authoring Guide<a class="headerlink" href="#su-by-t-template-authoring-guide" title="Permanent link">&para;</a></h1>
+<p>This page provides practical tips and best practices for writing SU-by-T templates.
+Where the <a href="../specification/">specification</a> describes <strong>what</strong> the available filters and functions provide, this guide focuses on <strong>how</strong> to use them effectively — and hints at <strong>why</strong> these practices matter.</p>
+<p>The rules are numbered so they can be referenced directly (e.g. <em>"this template violates T03"</em>).
+Each rule follows the same pattern:</p>
+<blockquote>
+<p><strong>code</strong> · title · short description · code example(s) · consequences if the rule is not followed</p>
+</blockquote>
+<hr />
+<h2 id="template-writing-rules">Template-Writing Rules<a class="headerlink" href="#template-writing-rules" title="Permanent link">&para;</a></h2>
+<h3 id="t01-comment-prelude">T01 · Comment Prelude<a class="headerlink" href="#t01-comment-prelude" title="Permanent link">&para;</a></h3>
+<p><strong>Add a formal comment block at the top of every template file.</strong></p>
+<p>Every template file should open with a structured comment that describes:</p>
+<ul>
+<li>the template name and purpose,</li>
+<li>the primary input variable (the iterated record), and</li>
+<li>any additional sets/dependencies it relies on.</li>
+</ul>
+<p>This makes the intent of the template self-documenting and lays the groundwork for future tooling — no such dedicated tooling exists yet, but the structured format creates the possibility to extract metadata without executing the template, and even to derive provenance-related triples (e.g. <code>prov:used</code>, <code>prov:wasDerivedFrom</code>) from that metadata automatically.</p>
+<pre><code class="language-jinja">{#-
+Template:    my-type.ttl
+Description: Produces RDF triples describing MyType instances.
+Input:       path/to/main-input.csv  (iterated as `_`)
+Sets:
+    - path/to/lookup.csv  as lookup
+Subyt settings:
+    iteration:   true   # true (default) = one template render per input row;
+                        # false = render template once for the entire input set
+    ignorecase:  true   # true (default) = all input keys lowercased automatically;
+                        # false = keys used as-is (case-sensitive)
+    flatten:     true   # true (default) = nested dict keys joined with '.' separator;
+                        # false = nested dicts kept as-is
+-#}
+</code></pre>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>Another developer (or yourself later) must read through the whole template to understand its inputs and purpose.</li>
+<li>Automated documentation or dependency-graph tooling cannot extract metadata.</li>
+<li>Template collections become hard to maintain as they grow.</li>
+</ul>
+<hr />
+<h3 id="t02-use-ttl-extension">T02 · Use <code>.ttl</code> Extension<a class="headerlink" href="#t02-use-ttl-extension" title="Permanent link">&para;</a></h3>
+<p><strong>Name your turtle-producing template files with a <code>.ttl</code> extension</strong> (e.g. <code>my-type.ttl</code> or <code>my-type.ldt.ttl</code>).</p>
+<p>This signals to the SU-by-T runtime that HTML/XML auto-escaping must be turned off.
+Without this, angle-brackets (<code>&lt;</code>, <code>&gt;</code>) in URI references, caret (<code>^</code>) characters in typed literals, and other turtle syntax characters may be incorrectly escaped or mangled.</p>
+<p>The double-extension variant <code>*.ldt.ttl</code> is a common convention to make the template-engine origin explicit at a glance (ldt = linked data templating), while still keeping the <code>.ttl</code> suffix that controls escaping behaviour.</p>
+<pre><code>templates/
+  my-type.ttl          # ✓ HTML-escaping off, ready for turtle output
+  my-type.ldt.ttl      # ✓ also acceptable – origin explicit
+  my-type.trig         # ✓ for TriG output – HTML-escaping also off
+  my-type.ldt.trig     # ✓ TriG with origin made explicit
+  my-type.j2           # ✗ HTML-escaping on by default – angle brackets will break
+</code></pre>
+<p>The same applies to TriG-producing templates: use a <code>.trig</code> (or <code>.ldt.trig</code>) extension so the runtime also disables HTML-escaping for graph-name angle brackets and graph content.</p>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>URI references (<code>&lt;http://example.org/thing&gt;</code>) are HTML-escaped into <code>&amp;lt;http://...&amp;gt;</code>, producing invalid Turtle.</li>
+<li>Typed literals (<code>'value'^^xsd:date</code>) may have their <code>^</code> characters escaped.</li>
+</ul>
+<hr />
+<h3 id="t03-do-not-overwrite-built-in-filters-or-functions">T03 · Do Not Overwrite Built-in Filters or Functions<a class="headerlink" href="#t03-do-not-overwrite-built-in-filters-or-functions" title="Permanent link">&para;</a></h3>
+<p><strong>Never define a macro or variable that shadows a built-in SU-by-T filter or function.</strong></p>
+<p>The names <code>xsd</code>, <code>uri</code>, <code>uritexpand</code>, <code>regexreplace</code>, <code>map</code>, and <code>unite</code> are reserved by the SU-by-T extension layer.
+Redefining them in your template will silently replace the built-in behaviour with your custom logic, causing subtle bugs that are hard to trace — especially for future maintainers who rely on standard behaviour.</p>
+<pre><code class="language-jinja">{#- ✗ BAD — overwrites the built-in `uri` filter -#}
+{% macro uri(value) %}{{ value | replace(' ', '%20') }}{% endmacro %}
+
+{#- ✓ GOOD — use a distinguishing name for custom helpers -#}
+{% macro safe_local_id(value) %}{{ value | replace(' ', '%20') }}{% endmacro %}
+</code></pre>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>Built-in validation (e.g. <code>| uri</code> rejecting malformed URIs) is silently bypassed.</li>
+<li>Templates that import or include your file also inherit the broken override.</li>
+<li>Test failures caused by the override will be very hard to diagnose.</li>
+</ul>
+<hr />
+<h3 id="t04-centralise-identifier-logic-in-a-shared-macro-file">T04 · Centralise Identifier Logic in a Shared Macro File<a class="headerlink" href="#t04-centralise-identifier-logic-in-a-shared-macro-file" title="Permanent link">&para;</a></h3>
+<p><strong>Provide a dedicated include file that defines macros for constructing URIs for each entity type in a consistent manner.</strong></p>
+<p>URI construction logic often needs to be reused across multiple templates in the same project.
+Centralising it in one file ensures all templates produce the same identifier for the same entity and makes it easy to update the pattern in one place.</p>
+<p>The right folder structure depends on the scale of your project:</p>
+<ul>
+<li><strong>Start simple</strong> — if you only have a handful of shared files, a single <code>include/</code> folder (grouping prefixes, macros, and other snippets together) is perfectly fine and keeps things easy to navigate.</li>
+<li><strong>Split as you grow</strong> — as the number of shared files increases, group them into purpose-specific sub-folders so each has a clear role (e.g. separating prefix declarations from callable macros, or grouping by entity type). The exact folder names are up to you (<code>macro/</code>, <code>prefix/</code>, <code>common/</code>, …); what matters is that each folder has a clear, consistent purpose. At that scale you will naturally end up referencing each sub-folder with its own glob pattern (e.g. <code>include/**/*</code>, <code>macro/**/*</code>) anyway.</li>
+</ul>
+<pre><code class="language-jinja">{#- include/identifiers.ttl -#}
+{% macro station_uri(station_id) -%}
+  {{ uritexpand(&quot;http://example.org/station/{id}&quot;, {&quot;id&quot;: station_id}) | uri }}
+{%- endmacro %}
+</code></pre>
+<pre><code class="language-jinja">{#- my-template.ttl — import and use the shared macro -#}
+{%- from './include/identifiers.ttl' import station_uri %}
+
+{{ station_uri(_.station_id) }}
+    a ex:Station ;
+    rdfs:label {{ _.name | xsd('string') }} ;
+.
+</code></pre>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>URI patterns for the same entity type drift between templates over time.</li>
+<li>A single change to a URI pattern requires edits in many files.</li>
+<li>Inconsistent identifiers break <code>owl:sameAs</code> chains and federated queries.</li>
+</ul>
+<hr />
+<h3 id="t05-apply-xsd-to-all-literal-values">T05 · Apply <code>| xsd</code> to All Literal Values<a class="headerlink" href="#t05-apply-xsd-to-all-literal-values" title="Permanent link">&para;</a></h3>
+<p><strong>Wrap every object-literal with <code>| xsd(typename)</code> to ensure correct type formatting and runtime checking.</strong></p>
+<p>The <code>| xsd</code> filter validates the input value against the declared XSD type, formats it properly for turtle, and makes the datatype annotation explicit in the output.
+Omitting it produces untyped plain literals, which are both harder to query and may silently drop precision (e.g. an integer rendered as a bare string).</p>
+<pre><code class="language-jinja">{#- ✗ BAD — plain untyped literals, no validation -#}
+ex:thing ex:count {{ _.count }} ;
+         ex:label {{ _.label }} ;
+         ex:date  {{ _.date }} .
+
+{#- ✓ GOOD — typed and validated -#}
+ex:thing ex:count {{ _.count | xsd('integer') }} ;
+         ex:label {{ _.label | xsd('string') }} ;
+         ex:date  {{ _.date  | xsd('date') }} .
+</code></pre>
+<p>By default, <code>| xsd</code> operates in <strong>fail-fast mode</strong>: it raises an error if the value is missing or cannot be cast to the requested type.
+This is the preferred behaviour for required fields — you want to know immediately when input data is malformed or incomplete.</p>
+<p>Optionally, pass <code>fb=''</code> (fallback) to suppress the error and produce an empty string instead.
+Use this <strong>only</strong> when the property is genuinely optional and you are handling the absent case at a higher level — most commonly in combination with <code>unite()</code> (see T08), which swallows empty parts automatically:</p>
+<pre><code class="language-jinja">{#- ✓ GOOD — fb='' used with unite() so the predicate is omitted when value is absent -#}
+    {{ unite('ex:optionalScore', _.score | xsd('double', fb='')) }} ;
+</code></pre>
+<p>Avoid using <code>fb=''</code> on required fields — it silently hides missing or malformed data instead of raising an informative error:</p>
+<pre><code class="language-jinja">{#- ✗ AVOID for required fields — errors are silently swallowed -#}
+ex:thing ex:requiredScore {{ _.score | xsd('double', fb='') }} .
+</code></pre>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>Numeric values are serialised as plain strings (<code>"42"</code> instead of <code>"42"^^xsd:integer</code>).</li>
+<li>Invalid values (e.g. a non-date string passed to a date field) will silently produce malformed output instead of raising an error at generation time.</li>
+<li>SPARQL queries relying on typed comparisons (<code>FILTER(?count &gt; 10)</code>) will not work correctly.</li>
+</ul>
+<hr />
+<h3 id="t06-apply-uri-to-all-uri-references">T06 · Apply <code>| uri</code> to All URI References<a class="headerlink" href="#t06-apply-uri-to-all-uri-references" title="Permanent link">&para;</a></h3>
+<p><strong>Wrap every URI reference with <code>| uri</code> to guarantee well-formed angle-bracket notation and correct percent-encoding.</strong></p>
+<p>The <code>| uri</code> filter validates the input as a proper URI, applies any needed percent-encoding, and wraps it in <code>&lt;…&gt;</code> for turtle.
+Without it, spaces, non-ASCII characters, or other special characters in a URI value will produce invalid Turtle.
+Chain <code>| uri</code> after <code>uritexpand()</code> for the cleanest pattern (see T07).</p>
+<pre><code class="language-jinja">{#- ✗ BAD — raw string, no validation, no angle brackets -#}
+ex:thing owl:sameAs {{ _.external_uri }} .
+
+{#- ✓ GOOD — validated, encoded, and angle-bracketed -#}
+ex:thing owl:sameAs {{ _.external_uri | uri }} .
+</code></pre>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>A URI containing spaces or non-ASCII characters produces invalid Turtle.</li>
+<li>Parsers / linters will reject the output.</li>
+<li>Missing <code>&lt;…&gt;</code> delimiters cause the URI to be interpreted as a prefixed name.</li>
+</ul>
+<hr />
+<h3 id="t07-use-uritexpand-to-construct-uris-never-string-concatenation">T07 · Use <code>uritexpand()</code> to Construct URIs — Never String Concatenation<a class="headerlink" href="#t07-use-uritexpand-to-construct-uris-never-string-concatenation" title="Permanent link">&para;</a></h3>
+<p><strong>Build URIs from templates using <code>uritexpand()</code> instead of string concatenation.</strong></p>
+<p><code>uritexpand()</code> expands <a href="https://datatracker.ietf.org/doc/html/rfc6570">RFC 6570 URI templates</a>, properly percent-encoding each variable value before inserting it.
+Plain string concatenation does not encode the parts, so a value containing <code>/</code>, <code>?</code>, <code>#</code>, or spaces will silently produce a syntactically or semantically broken URI.</p>
+<pre><code class="language-jinja">{#- ✗ BAD — concatenation does not percent-encode values -#}
+ex:thing ex:hasPage &lt;http://example.org/pages/{{ _.title }}&gt; .
+
+{#- ✓ GOOD — uritexpand handles encoding, | uri wraps in angle brackets -#}
+ex:thing ex:hasPage {{ uritexpand(&quot;http://example.org/pages/{title}&quot;, _) | uri }} .
+</code></pre>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>Special characters in field values silently break the URI.</li>
+<li>The resulting URIs may differ across implementations that handle template expansion differently.</li>
+<li>Federated queries and owl:sameAs links fail when URIs are not canonical.</li>
+</ul>
+<hr />
+<h3 id="t08-use-unite-to-replace-conditional-blocks">T08 · Use <code>unite()</code> to Replace Conditional Blocks<a class="headerlink" href="#t08-use-unite-to-replace-conditional-blocks" title="Permanent link">&para;</a></h3>
+<p><strong>Prefer <code>unite()</code> over <code>{% if … %}…{% endif %}</code> blocks when guarding optional property-value pairs.</strong></p>
+<p><code>unite()</code> tests that all its string arguments are non-blank before joining them.
+This eliminates the visual noise of repeated if/endif blocks around optional predicates and avoids dangling semicolons or commas when a value is absent.</p>
+<pre><code class="language-jinja">{#- ✗ NOISY — manual if/endif for every optional property -#}
+{%- if _.start_date and _.start_date != '' %}
+ex:thing ex:startDate {{ _.start_date | xsd('date') }} ;
+{%- endif %}
+
+{#- ✓ CLEAN — unite() handles the guard in one line -#}
+    {{ unite('ex:startDate', _.start_date | xsd('date', fb='')) }} ;
+</code></pre>
+<p>For a URI reference pair (prefix + local part) that should only appear together:</p>
+<pre><code class="language-jinja">    {{ unite( unite('pfx', optional_local_part, sep=':'), 'ex:predicate', sep=' ') }} ;
+</code></pre>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>Verbose if/endif blocks obscure the intent of the template.</li>
+<li>A missing endif or wrong nesting creates whitespace or syntax errors in the output.</li>
+<li>Dangling semicolons (<code>;</code>) at the end of a triple block cause invalid Turtle.</li>
+</ul>
+<hr />
+<h2 id="validation-tips">Validation Tips<a class="headerlink" href="#validation-tips" title="Permanent link">&para;</a></h2>
+<h3 id="v01-test-with-both-typical-and-edge-case-data">V01 · Test with Both Typical and Edge-Case Data<a class="headerlink" href="#v01-test-with-both-typical-and-edge-case-data" title="Permanent link">&para;</a></h3>
+<p><strong>Run your template against both representative real-world data and deliberately challenging inputs.</strong></p>
+<p>Good test data covers:</p>
+<ul>
+<li><strong>Happy path</strong> — the normal, expected input values.</li>
+<li><strong>Missing / null values</strong> — fields that are empty, <code>null</code>, <code>"NA"</code>, or absent from the record.</li>
+<li><strong>Boundary values</strong> — very long strings, extreme numbers, dates at month/year boundaries.</li>
+<li><strong>Special characters</strong> — quotes, backslashes, newlines, non-ASCII in string fields; slashes and hashes in URI fields.</li>
+<li><strong>Type mismatches</strong> — a number where a date is expected, a boolean where a string is expected.</li>
+</ul>
+<p>Deliberately try to break the template.
+If it doesn't break cleanly (raising an informative error), that is itself a finding to address.</p>
+<p>The <code>.test</code> files in this specification repository provide a useful reference for the pattern of pairing inputs with expected outputs — the same approach can be applied to your own templates: define an input record, run the template, and capture the expected Turtle output as a reference to check against.</p>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>Edge-case inputs that were never tested silently produce malformed or empty output at production time.</li>
+<li>A template that never raises errors on bad input may be hiding silent data loss.</li>
+</ul>
+<hr />
+<h3 id="v02-validate-the-generated-turtle-trig-output">V02 · Validate the Generated Turtle / TriG Output<a class="headerlink" href="#v02-validate-the-generated-turtle-trig-output" title="Permanent link">&para;</a></h3>
+<p><strong>Always parse the generated output with a dedicated Turtle or TriG parser/linter before deploying.</strong></p>
+<p>The template engine cannot guarantee that the combined output of all triples forms syntactically valid Turtle.
+An external parser catches issues such as missing prefixes, unclosed blank nodes, dangling semicolons, or encoding errors that are invisible in the raw template.</p>
+<p>Recommended tools:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Format</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://jena.apache.org/documentation/io/">riot</a> (Apache Jena)</td>
+<td>Turtle, TriG, N-Triples, …</td>
+<td><code>riot --validate my-output.ttl</code></td>
+</tr>
+<tr>
+<td><a href="http://librdf.org/raptor/rapper.html">rapper</a> (Raptor)</td>
+<td>Turtle, N-Triples, …</td>
+<td><code>rapper -i turtle my-output.ttl</code></td>
+</tr>
+<tr>
+<td><a href="https://rdflib.readthedocs.io/en/stable/intro_to_parsing.html">rdfpipe</a> (rdflib)</td>
+<td>Turtle, TriG, …</td>
+<td><code>rdfpipe -i turtle my-output.ttl</code></td>
+</tr>
+<tr>
+<td><a href="https://www.easyrdf.org/converter">EasyRDF online validator</a></td>
+<td>Turtle</td>
+<td>browser-based</td>
+</tr>
+<tr>
+<td><a href="http://ttl.summerofcode.be/">TTL validator</a></td>
+<td>Turtle</td>
+<td>browser-based</td>
+</tr>
+</tbody>
+</table>
+<p>Integrate this step into your CI pipeline so every generated file is validated automatically.</p>
+<p><strong>Consequences if you skip this</strong></p>
+<ul>
+<li>Syntactically invalid output reaches consumers who then face cryptic parser errors.</li>
+<li>Silent encoding or quoting bugs are discovered only in production.</li>
+<li>Downstream tooling (triple stores, reasoners) rejects or partially loads the file.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
