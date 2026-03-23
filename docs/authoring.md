@@ -22,7 +22,7 @@ Every template file should open with a structured comment that describes:
 - the primary input variable (the iterated record), and
 - any additional sets/dependencies it relies on.
 
-This makes the intent of the template self-documenting and allows tooling to extract metadata without executing the template.
+This makes the intent of the template self-documenting and opens the door for tooling to extract metadata without executing the template (no such dedicated tooling exists yet, but the structured format creates the possibility).
 
 ```jinja
 {#-
@@ -41,10 +41,11 @@ Subyt settings:
 -#}
 ```
 
-!!! failure "Consequences if you skip this"
-    - Another developer (or yourself later) must read through the whole template to understand its inputs and purpose.
-    - Automated documentation or dependency-graph tooling cannot extract metadata.
-    - Template collections become hard to maintain as they grow.
+**Consequences if you skip this**
+
+- Another developer (or yourself later) must read through the whole template to understand its inputs and purpose.
+- Automated documentation or dependency-graph tooling cannot extract metadata.
+- Template collections become hard to maintain as they grow.
 
 ---
 
@@ -61,12 +62,17 @@ The double-extension variant `*.ldt.ttl` is a common convention to make the temp
 templates/
   my-type.ttl          # ✓ HTML-escaping off, ready for turtle output
   my-type.ldt.ttl      # ✓ also acceptable – origin explicit
+  my-type.trig         # ✓ for TriG output – HTML-escaping also off
+  my-type.ldt.trig     # ✓ TriG with origin made explicit
   my-type.j2           # ✗ HTML-escaping on by default – angle brackets will break
 ```
 
-!!! failure "Consequences if you skip this"
-    - URI references (`<http://example.org/thing>`) are HTML-escaped into `&lt;http://...&gt;`, producing invalid Turtle.
-    - Typed literals (`'value'^^xsd:date`) may have their `^` characters escaped.
+The same applies to TriG-producing templates: use a `.trig` (or `.ldt.trig`) extension so the runtime also disables HTML-escaping for graph-name angle brackets and graph content.
+
+**Consequences if you skip this**
+
+- URI references (`<http://example.org/thing>`) are HTML-escaped into `&lt;http://...&gt;`, producing invalid Turtle.
+- Typed literals (`'value'^^xsd:date`) may have their `^` characters escaped.
 
 ---
 
@@ -78,17 +84,18 @@ The names `xsd`, `uri`, `uritexpand`, `regexreplace`, `map`, and `unite` are res
 Redefining them in your template will silently replace the built-in behaviour with your custom logic, causing subtle bugs that are hard to trace — especially for future maintainers who rely on standard behaviour.
 
 ```jinja
-{# ✗ BAD — overwrites the built-in `uri` filter #}
+{#- ✗ BAD — overwrites the built-in `uri` filter -#}
 {% macro uri(value) %}{{ value | replace(' ', '%20') }}{% endmacro %}
 
-{# ✓ GOOD — use a distinguishing name for custom helpers #}
+{#- ✓ GOOD — use a distinguishing name for custom helpers -#}
 {% macro safe_local_id(value) %}{{ value | replace(' ', '%20') }}{% endmacro %}
 ```
 
-!!! failure "Consequences if you skip this"
-    - Built-in validation (e.g. `| uri` rejecting malformed URIs) is silently bypassed.
-    - Templates that import or include your file also inherit the broken override.
-    - Test failures caused by the override will be very hard to diagnose.
+**Consequences if you skip this**
+
+- Built-in validation (e.g. `| uri` rejecting malformed URIs) is silently bypassed.
+- Templates that import or include your file also inherit the broken override.
+- Test failures caused by the override will be very hard to diagnose.
 
 ---
 
@@ -105,14 +112,14 @@ Two folder conventions are commonly used — choose one and apply it consistentl
 - **`macros/`** — separates macro files from other includes, making the distinction between "prefix declarations" and "callable macros" explicit (e.g. `macros/identifiers.ttl`, `prefixes/prefixes.ttl`).
 
 ```jinja
-{# includes/identifiers.ttl #}
+{#- includes/identifiers.ttl -#}
 {% macro station_uri(station_id) -%}
   {{ uritexpand("http://example.org/station/{id}", {"id": station_id}) | uri }}
 {%- endmacro %}
 ```
 
 ```jinja
-{# my-template.ttl — import and use the shared macro #}
+{#- my-template.ttl — import and use the shared macro -#}
 {%- from './includes/identifiers.ttl' import station_uri %}
 
 {{ station_uri(_.station_id) }}
@@ -121,10 +128,11 @@ Two folder conventions are commonly used — choose one and apply it consistentl
 .
 ```
 
-!!! failure "Consequences if you skip this"
-    - URI patterns for the same entity type drift between templates over time.
-    - A single change to a URI pattern requires edits in many files.
-    - Inconsistent identifiers break `owl:sameAs` chains and federated queries.
+**Consequences if you skip this**
+
+- URI patterns for the same entity type drift between templates over time.
+- A single change to a URI pattern requires edits in many files.
+- Inconsistent identifiers break `owl:sameAs` chains and federated queries.
 
 ---
 
@@ -136,27 +144,40 @@ The `| xsd` filter validates the input value against the declared XSD type, form
 Omitting it produces untyped plain literals, which are both harder to query and may silently drop precision (e.g. an integer rendered as a bare string).
 
 ```jinja
-{# ✗ BAD — plain untyped literals, no validation #}
+{#- ✗ BAD — plain untyped literals, no validation -#}
 ex:thing ex:count {{ _.count }} ;
          ex:label {{ _.label }} ;
          ex:date  {{ _.date }} .
 
-{# ✓ GOOD — typed and validated #}
+{#- ✓ GOOD — typed and validated -#}
 ex:thing ex:count {{ _.count | xsd('integer') }} ;
          ex:label {{ _.label | xsd('string') }} ;
          ex:date  {{ _.date  | xsd('date') }} .
 ```
 
-Use `fb=''` (fallback) to gracefully skip optional properties that may be absent:
+By default, `| xsd` operates in **fail-fast mode**: it raises an error if the value is missing or cannot be cast to the requested type.
+This is the preferred behaviour for required fields — you want to know immediately when input data is malformed or incomplete.
+
+Optionally, pass `fb=''` (fallback) to suppress the error and produce an empty string instead.
+Use this **only** when the property is genuinely optional and you are handling the absent case at a higher level — most commonly in combination with `unite()` (see T08), which swallows empty parts automatically:
 
 ```jinja
-ex:thing ex:optionalScore {{ _.score | xsd('double', fb='') }} .
+{#- ✓ GOOD — fb='' used with unite() so the predicate is omitted when value is absent -#}
+    {{ unite('ex:optionalScore', _.score | xsd('double', fb='')) }} ;
 ```
 
-!!! failure "Consequences if you skip this"
-    - Numeric values are serialised as plain strings (`"42"` instead of `"42"^^xsd:integer`).
-    - Invalid values (e.g. a non-date string passed to a date field) will silently produce malformed output instead of raising an error at generation time.
-    - SPARQL queries relying on typed comparisons (`FILTER(?count > 10)`) will not work correctly.
+Avoid using `fb=''` on required fields — it silently hides missing or malformed data instead of raising an informative error:
+
+```jinja
+{#- ✗ AVOID for required fields — errors are silently swallowed -#}
+ex:thing ex:requiredScore {{ _.score | xsd('double', fb='') }} .
+```
+
+**Consequences if you skip this**
+
+- Numeric values are serialised as plain strings (`"42"` instead of `"42"^^xsd:integer`).
+- Invalid values (e.g. a non-date string passed to a date field) will silently produce malformed output instead of raising an error at generation time.
+- SPARQL queries relying on typed comparisons (`FILTER(?count > 10)`) will not work correctly.
 
 ---
 
@@ -169,17 +190,18 @@ Without it, spaces, non-ASCII characters, or other special characters in a URI v
 Chain `| uri` after `uritexpand()` for the cleanest pattern (see T07).
 
 ```jinja
-{# ✗ BAD — raw string, no validation, no angle brackets #}
+{#- ✗ BAD — raw string, no validation, no angle brackets -#}
 ex:thing owl:sameAs {{ _.external_uri }} .
 
-{# ✓ GOOD — validated, encoded, and angle-bracketed #}
+{#- ✓ GOOD — validated, encoded, and angle-bracketed -#}
 ex:thing owl:sameAs {{ _.external_uri | uri }} .
 ```
 
-!!! failure "Consequences if you skip this"
-    - A URI containing spaces or non-ASCII characters produces invalid Turtle.
-    - Parsers / linters will reject the output.
-    - Missing `<…>` delimiters cause the URI to be interpreted as a prefixed name.
+**Consequences if you skip this**
+
+- A URI containing spaces or non-ASCII characters produces invalid Turtle.
+- Parsers / linters will reject the output.
+- Missing `<…>` delimiters cause the URI to be interpreted as a prefixed name.
 
 ---
 
@@ -191,17 +213,18 @@ ex:thing owl:sameAs {{ _.external_uri | uri }} .
 Plain string concatenation does not encode the parts, so a value containing `/`, `?`, `#`, or spaces will silently produce a syntactically or semantically broken URI.
 
 ```jinja
-{# ✗ BAD — concatenation does not percent-encode values #}
+{#- ✗ BAD — concatenation does not percent-encode values -#}
 ex:thing ex:hasPage <http://example.org/pages/{{ _.title }}> .
 
-{# ✓ GOOD — uritexpand handles encoding, | uri wraps in angle brackets #}
+{#- ✓ GOOD — uritexpand handles encoding, | uri wraps in angle brackets -#}
 ex:thing ex:hasPage {{ uritexpand("http://example.org/pages/{title}", _) | uri }} .
 ```
 
-!!! failure "Consequences if you skip this"
-    - Special characters in field values silently break the URI.
-    - The resulting URIs may differ across implementations that handle template expansion differently.
-    - Federated queries and owl:sameAs links fail when URIs are not canonical.
+**Consequences if you skip this**
+
+- Special characters in field values silently break the URI.
+- The resulting URIs may differ across implementations that handle template expansion differently.
+- Federated queries and owl:sameAs links fail when URIs are not canonical.
 
 ---
 
@@ -213,12 +236,12 @@ ex:thing ex:hasPage {{ uritexpand("http://example.org/pages/{title}", _) | uri }
 This eliminates the visual noise of repeated if/endif blocks around optional predicates and avoids dangling semicolons or commas when a value is absent.
 
 ```jinja
-{# ✗ NOISY — manual if/endif for every optional property #}
+{#- ✗ NOISY — manual if/endif for every optional property -#}
 {%- if _.start_date and _.start_date != '' %}
 ex:thing ex:startDate {{ _.start_date | xsd('date') }} ;
 {%- endif %}
 
-{# ✓ CLEAN — unite() handles the guard in one line #}
+{#- ✓ CLEAN — unite() handles the guard in one line -#}
     {{ unite('ex:startDate', _.start_date | xsd('date', fb='')) }} ;
 ```
 
@@ -228,10 +251,11 @@ For a URI reference pair (prefix + local part) that should only appear together:
     {{ unite( unite('pfx', optional_local_part, sep=':'), 'ex:predicate', sep=' ') }} ;
 ```
 
-!!! failure "Consequences if you skip this"
-    - Verbose if/endif blocks obscure the intent of the template.
-    - A missing endif or wrong nesting creates whitespace or syntax errors in the output.
-    - Dangling semicolons (`;`) at the end of a triple block cause invalid Turtle.
+**Consequences if you skip this**
+
+- Verbose if/endif blocks obscure the intent of the template.
+- A missing endif or wrong nesting creates whitespace or syntax errors in the output.
+- Dangling semicolons (`;`) at the end of a triple block cause invalid Turtle.
 
 ---
 
@@ -254,9 +278,10 @@ If it doesn't break cleanly (raising an informative error), that is itself a fin
 
 The `.test` files in this specification repository provide a useful reference for the pattern of pairing inputs with expected outputs — the same approach can be applied to your own templates: define an input record, run the template, and capture the expected Turtle output as a reference to check against.
 
-!!! failure "Consequences if you skip this"
-    - Edge-case inputs that were never tested silently produce malformed or empty output at production time.
-    - A template that never raises errors on bad input may be hiding silent data loss.
+**Consequences if you skip this**
+
+- Edge-case inputs that were never tested silently produce malformed or empty output at production time.
+- A template that never raises errors on bad input may be hiding silent data loss.
 
 ---
 
@@ -279,7 +304,8 @@ Recommended tools:
 
 Integrate this step into your CI pipeline so every generated file is validated automatically.
 
-!!! failure "Consequences if you skip this"
-    - Syntactically invalid output reaches consumers who then face cryptic parser errors.
-    - Silent encoding or quoting bugs are discovered only in production.
-    - Downstream tooling (triple stores, reasoners) rejects or partially loads the file.
+**Consequences if you skip this**
+
+- Syntactically invalid output reaches consumers who then face cryptic parser errors.
+- Silent encoding or quoting bugs are discovered only in production.
+- Downstream tooling (triple stores, reasoners) rejects or partially loads the file.
