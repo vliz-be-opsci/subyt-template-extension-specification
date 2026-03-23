@@ -106,10 +106,10 @@ Redefining them in your template will silently replace the built-in behaviour wi
 URI construction logic often needs to be reused across multiple templates in the same project.
 Centralising it in one file ensures all templates produce the same identifier for the same entity and makes it easy to update the pattern in one place.
 
-Two folder conventions are commonly used — the right choice depends on the scale of your project:
+The right folder structure depends on the scale of your project:
 
-- **`include/`** — groups all reusable snippets (prefixes, macros) together, close to standard Jinja usage (e.g. `include/identifiers.ttl`, `include/prefixes.ttl`). A good starting point: if you only have a handful of shared files, a single `include/` folder keeps things simple.
-- **`include/` + `macro/`** — as the project grows and the number of shared files increases, splitting into separate folders makes the distinction between "prefix declarations" and "callable macros" explicit (e.g. `include/prefixes.ttl`, `macro/identifiers.ttl`). At larger scales you will naturally end up referencing `include/**/*` and `macro/**/*` separately anyway.
+- **Start simple** — if you only have a handful of shared files, a single `include/` folder (grouping prefixes, macros, and other snippets together) is perfectly fine and keeps things easy to navigate.
+- **Split as you grow** — as the number of shared files increases, group them into purpose-specific sub-folders so each has a clear role (e.g. separating prefix declarations from callable macros, or grouping by entity type). The exact folder names are up to you (`macro/`, `prefix/`, `common/`, …); what matters is that each folder has a clear, consistent purpose. At that scale you will naturally end up referencing each sub-folder with its own glob pattern (e.g. `include/**/*`, `macro/**/*`) anyway.
 
 ```jinja
 {#- include/identifiers.ttl -#}
