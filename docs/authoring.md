@@ -108,11 +108,11 @@ Centralising it in one file ensures all templates produce the same identifier fo
 
 Two folder conventions are commonly used — choose one and apply it consistently:
 
-- **`includes/`** — groups all reusable snippets (prefixes, macros) together, close to standard Jinja usage (e.g. `includes/identifiers.ttl`, `includes/prefixes.ttl`).
-- **`macros/`** — separates macro files from other includes, making the distinction between "prefix declarations" and "callable macros" explicit (e.g. `macros/identifiers.ttl`, `prefixes/prefixes.ttl`).
+- **`include/`** — groups all reusable snippets (prefixes, macros) together, close to standard Jinja usage (e.g. `include/identifiers.ttl`, `include/prefixes.ttl`).
+- **`macro/`** — separates macro files from other includes, making the distinction between "prefix declarations" and "callable macros" explicit (e.g. `macro/identifiers.ttl`, `prefixes/prefixes.ttl`).
 
 ```jinja
-{#- includes/identifiers.ttl -#}
+{#- include/identifiers.ttl -#}
 {% macro station_uri(station_id) -%}
   {{ uritexpand("http://example.org/station/{id}", {"id": station_id}) | uri }}
 {%- endmacro %}
@@ -120,7 +120,7 @@ Two folder conventions are commonly used — choose one and apply it consistentl
 
 ```jinja
 {#- my-template.ttl — import and use the shared macro -#}
-{%- from './includes/identifiers.ttl' import station_uri %}
+{%- from './include/identifiers.ttl' import station_uri %}
 
 {{ station_uri(_.station_id) }}
     a ex:Station ;
