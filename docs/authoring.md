@@ -22,7 +22,7 @@ Every template file should open with a structured comment that describes:
 - the primary input variable (the iterated record), and
 - any additional sets/dependencies it relies on.
 
-This makes the intent of the template self-documenting and opens the door for tooling to extract metadata without executing the template (no such dedicated tooling exists yet, but the structured format creates the possibility).
+This makes the intent of the template self-documenting and lays the groundwork for future tooling — no such dedicated tooling exists yet, but the structured format creates the possibility to extract metadata without executing the template, and even to derive provenance-related triples (e.g. `prov:used`, `prov:wasDerivedFrom`) from that metadata automatically.
 
 ```jinja
 {#-
